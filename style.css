@@ -1,0 +1,8 @@
+/* -------------------------------------- */
+.heatmap-container {
+    /* min-height: 500px; */
+    width: 80%;
+    margin: 10%;
+    height: 100%;
+    aspect-ratio: 1.30;
+}

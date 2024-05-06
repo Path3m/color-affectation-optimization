@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="./style.css"/>
+
+    <!-- to draw the streamgraph -->
+    <script src="https://d3js.org/d3.v6.js"></script>
+
+    <!-- to print heatmap : note that it can be done with d3, to see later on -->
+    <script src="https://cdn.anychart.com/releases/8.11.0/js/anychart-core.min.js"></script>
+    <script src="https://cdn.anychart.com/releases/8.11.0/js/anychart-heatmap.min.js"></script>
+
+    <!-- to compute distance between colors -->
+    <script src="https://cdn.jsdelivr.net/npm/culori"></script>
+
+    <!-- to use box plot -->
+    <script src="https://cdn.plot.ly/plotly-2.32.0.min.js" charset="utf-8"></script>
+
+    <!-- my main module and code -->
+    <script type="module" src="main.js"></script>
+</head>
+
+<body>
+    <div class="heatmap-container" id="color-palette"></div>
+    <div class="heatmap-container" id="color-dist-global-palette"></div>
+
+    <!-- Part music -->
+    <div id="streamgraph1"></div>
+    <div class="heatmap-container" id="color-music"></div>
+    <div class="heatmap-container" id="color-dist-music-palette"></div>
+
+    <div class="heatmap-container" id="heatmapMusic-1"></div>
+    <div class="heatmap-container" id="heatmapMusic-2"></div>
+
+    <!-- Part names in usa -->
+    <div id="streamgraph2"></div>
+    <div class="heatmap-container" id="color-names"></div>
+    <div class="heatmap-container" id="color-dist-names-palette"></div>
+
+    <div class="heatmap-container" id="heatmapNames-1"></div>
+    <div class="heatmap-container" id="heatmapNames-2"></div>
+
+    <!-- Part optigen -->
+    <div id="optigen"></div>
+</body>
+
+</html>
