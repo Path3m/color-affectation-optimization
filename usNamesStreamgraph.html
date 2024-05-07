@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<html>
 
 <head>
     <meta charset="utf-8">
@@ -21,22 +20,21 @@
 
 <body>
     <nav>
-        <a href="./musicStreamgraph.html">Music listening among time</a>
-        <a href="./usNamesStreamgraph.html">USA Names among time</a>
+        <a href="./index.html">Main Page</a>
     </nav>
-    
-    <p fontsize="30">
-        Main color palette used throughout the color representation.
-    </p>
-    <div class="heatmap-container" id="color-palette"></div>
-    <div class="heatmap-container" id="color-dist-global-palette"></div>
+
+    <div id="streamgraph2"></div>
+    <div class="heatmap-container" id="color-names"></div>
+    <div class="heatmap-container" id="color-dist-names-palette"></div>
+
+    <div class="heatmap-container" id="heatmapNames-1"></div>
+    <div class="heatmap-container" id="heatmapNames-2"></div>
 
     <script type="module">
         import * as obj from "./data/build.js";
 
-        obj.globalPalette.draw("color-palette");
-        obj.CDMGlobal.draw("color-dist-global-palette");
+        obj.graphUsaNames.draw(obj.colorNames.colors, "#streamgraph2");
+        obj.colorNames.draw("color-names", obj.names);
     </script>
-</body>
 
-</html>
+</body>

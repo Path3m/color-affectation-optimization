@@ -21,21 +21,31 @@
 
 <body>
     <nav>
-        <a href="./musicStreamgraph.html">Music listening among time</a>
-        <a href="./usNamesStreamgraph.html">USA Names among time</a>
+        <a href="./index.html">Main Page</a>
     </nav>
-    
-    <p fontsize="30">
-        Main color palette used throughout the color representation.
-    </p>
-    <div class="heatmap-container" id="color-palette"></div>
-    <div class="heatmap-container" id="color-dist-global-palette"></div>
+
+    <!-- Part music -->
+    <div id="streamgraph1"></div>
+    <div class="heatmap-container" id="color-music"></div>
+    <div class="heatmap-container" id="color-dist-music-palette"></div>
+
+
+    <div class="heatmap-container" id="heatmapMusic-1"></div>
+    <div class="heatmap-container" id="heatmapMusic-2"></div>
 
     <script type="module">
         import * as obj from "./data/build.js";
 
-        obj.globalPalette.draw("color-palette");
-        obj.CDMGlobal.draw("color-dist-global-palette");
+        obj.graphDayMusique.draw(
+            obj.colorMusic.colors,
+            "#streamgraph1"
+        );
+
+        obj.colorMusic.draw("color-music", obj.music);
+
+        obj.CDMMusic.draw("color-dist-music-palette");
+        obj.IMMusic1.draw("heatmapMusic-1");
+        obj.IMMusic2.draw("heatmapMusic-2");
     </script>
 </body>
 
