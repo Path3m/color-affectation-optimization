@@ -84,4 +84,41 @@ export class Permutation{
 
         return [i,j];
     }
+
+    /**
+     * Recursively generate all the permutation from a 
+     * given set of integer
+     * @param {Array<number>} setOfNumber the set of number of the different permutation
+     * @returns the array containing all permutation in the given set of number
+     */
+    static createAllRec(setOfNumber){
+        if(setOfNumber.length == 1){
+            return [[setOfNumber[0]]];
+        }else{
+            let allpermutation = [];
+
+            for(let i=0; i<setOfNumber.length; i++){
+                let remains = setOfNumber.toSpliced(i, 1);
+
+                this.createAllRec(remains).forEach( current => {
+                    let newpermutation = new Array();
+                    newpermutation.push(setOfNumber[i]);
+                    newpermutation.push(...current);
+
+                    allpermutation.push(newpermutation);
+                });
+            }
+            return allpermutation;
+        }
+    }
+
+    /**
+     * Call the recursive creation of all permutation, to create
+     * all permutation of the set of number [1;size] with size given
+     * @param {number} size the size of the permutations 
+     * @returns an array containing all the permutation of size
+     */
+    static createAll(size){
+        return Permutation.createAllRec(Permutation.index(size));
+    }
 }
