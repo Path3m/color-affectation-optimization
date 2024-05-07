@@ -17,9 +17,23 @@ export class Population{
      * @returns 
      */
     static randPop(sizePop, sizeInd, func){
-        let pop = new Array(sizePop)
-        for(let i=0; i<pop.length; pop[i++] = new Individual(Permutation.rand(sizeInd), func));
-        return new Population(pop, func);
+        let members = new Array(sizePop)
+        for(let i=0; i<members.length; members[i++] = new Individual(Permutation.rand(sizeInd), func));
+        return new Population(members, func);
+    }
+
+    /**
+     * Create a population with all the individuals from all the permutation 
+     * of the given size
+     * @param {*} sizeInd 
+     * @param {*} func 
+     * @returns 
+     */
+    static fullpop(sizeInd, func){
+        let permutations = Permutation.createAll(sizeInd);
+        let members = new Array();
+        permutations.forEach(current => members.push(new Individual(current, func)));
+        return new Population(members, func);
     }
 
     /**
