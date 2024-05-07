@@ -29,10 +29,19 @@ export class Optigen{
     }
 
     /**
+     * Create the full population of every permutation and order it by score
+     * @returns the population and an array of score to use in statisctics
+     */
+    bruteForce(){
+        let population = Population.fullpop(this.sizeInd, this.score);
+        return { last: population.sortByScore(), statistic: [population.score()] };
+    }
+
+    /**
      * Execute the genetics optimisation method
      * @returns the last population, and the score of each generations to provide statistic data
      */
-    execute(){
+    optimisation(){
         let population = Population.randPop(this.sizeGen, this.sizeInd, this.score)
                         .sortByScore();
         let statGenerations = new Array();
@@ -59,6 +68,19 @@ export class Optigen{
         }
     
         return {last: population, statistic: statGenerations};
+    }
+
+    /**
+     * Execute the genetic optimisation, if the size of the permutations are under 9,
+     * we can generate them all and take the best solution according to the score order.
+     * Else, we execute genetic optimisation.
+     * @returns the best individuals of the last generated population, and there score to provide statistical data. 
+     */
+    execute(){
+        return ((this.sizeInd < 9) ?
+            this.bruteForce() :
+            this.optimisation()
+        );
     }
 
     /**
