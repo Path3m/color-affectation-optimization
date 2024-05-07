@@ -10,14 +10,15 @@ export class HeatMap{
      * @param {*} title 
      * @param {*} container an html container to display on the page
      */
-    constructor(title, container, dataMatrix, dataCategories){
+    constructor(dataMatrix, dataCategories, title, container){
 
         this.palette = ColorPalette.largeGraphPalette( ColorPalette.interpolateBuRd );
         this.data = this.heatMapData(dataMatrix, dataCategories);
 
         this.heatmap = anychart.heatMap(this.data);
-        this.heatmap.container(container)
         this.heatmap.title(title);
+
+        if(container != undefined) this.heatmap.container(container);
     }
 
     /**
@@ -52,7 +53,7 @@ export class HeatMap{
      * @param {*} computeMethod 
      * @returns 
      */
-    static importanceHeatMap(container, graph, computeMethod){
+    static importanceHeatMap(graph, computeMethod, container){
         let importance = [];
         switch(computeMethod.length){
           case 1: importance = graph.computeImportanceMatrixInPlace(computeMethod[0]); break;
@@ -65,7 +66,7 @@ export class HeatMap{
         let categories = graph.getCategories();
 
         return new HeatMap(
-            "Importance : "+name(computeMethod), container, importance, categories
+            importance, categories, "Importance : "+name(computeMethod), container
         );
     }
 
@@ -74,12 +75,14 @@ export class HeatMap{
      * @param {*} container 
      * @param {*} colorRange 
      */
-    static colorDistanceHeatMap(container, colorPalette, categories){
+    static colorDistanceHeatMap(colorPalette, categories, container){
         let distance = colorPalette.computeDistanceMatrix();
         return new HeatMap(
-            "Distance Couleur", container, distance, 
-            (categories == undefined)? colorPalette.colors : categories
-        )
+            distance, 
+            (categories == undefined)? colorPalette.colors : categories,
+            "Distance couleur",
+            container
+        );
     }
 
     /**
@@ -115,8 +118,9 @@ export class HeatMap{
     /**
      * Draw the heatmap
      */
-    draw(){
+    draw(container){
         this.setColorScale(this.palette.colors);
+        if(container != undefined) this.heatmap.container(container);
         this.heatmap.draw();
     }
 }

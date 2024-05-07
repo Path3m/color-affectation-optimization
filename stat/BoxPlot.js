@@ -7,7 +7,7 @@ export class OptigenBoxPlot{
      * @param {*} div 
      * @param {*} geneticResult 
      */
-    constructor(div, geneticResult){
+    constructor(geneticResult, container){
         let palette = ColorPalette.buildPalette(
             20,{min:0.1,max:0.9},
             d3.interpolateViridis
@@ -17,7 +17,7 @@ export class OptigenBoxPlot{
         let data = tmp.data;
         let range = tmp.range;
 
-        this.div = div;
+        this.container = (container == undefined) ? undefined : container;
         this.data = data;
 
         this.layout = this.buildLayout(range);
@@ -77,7 +77,11 @@ export class OptigenBoxPlot{
     /**
      * Draw the box plot
      */
-    draw(){
-        Plotly.newPlot(this.div, this.data, this.layout);
+    draw(container){
+        Plotly.newPlot(
+            (this.container == undefined) ? container : this.container, 
+            this.data, 
+            this.layout
+        );
     }
 }

@@ -99,7 +99,9 @@ export class ColorPalette{
         for(let i=0;i<line;i++){ 
             for(let j=0;j<column;j++){
                 let k = i*column+j;
-                let categorie = (categories[k] == undefined) ? k : categories[k];
+                let categorie = 
+                    (categories == undefined || categories[k] == undefined) ? 
+                    k : categories[k];
                 data[k] = {x:""+j, y:""+i, heat:""+k, custom_field:  categorie, fill: this.colors[k]};
             }
         }

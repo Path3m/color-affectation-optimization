@@ -7,7 +7,7 @@ export class Streamgraph {
      * @param {string} divID 
      * @param {string | any} data 
      */
-    constructor(divID, data){
+    constructor(data, divID){
         // set the dimensions and margins of the graph
         this.margin = {top: 20, right: 30, bottom: 30, left: 60};
         this.width = 1200 - this.margin.left - this.margin.right;
@@ -17,8 +17,13 @@ export class Streamgraph {
           d3.csvParse(data) : 
           data;
 
-        this.svg = this.initSVG(divID);
-        this.divID = divID;
+        if(divID == undefined){
+          this.svg = undefined;
+          this.divID = undefined;
+        }else{
+          this.svg = this.initSVG(divID);
+          this.divID = divID;
+        }
     }
 
     /**
@@ -96,20 +101,20 @@ export class Streamgraph {
      * Draw the graph according to its data and a given set of color
      * @param {*} colors
      */
-    draw(colors) {
+    draw(colors, divID) {
+      if(divID != undefined){
+        this.svg   = this.initSVG(divID);
+        this.divID = divID;
+      }
+
       // List of categories = header of the csv files
       var keys = this.data.columns.slice(1);
       var Xscale = (this.data.columns)[0]; //scale of the x axe
-    
       // Add X and Y axis
       var x = this.addAbscissa(Xscale);
       var y = this.addOrdinate(keys);
-    
       // color palette
-      var color = d3.scaleOrdinal()
-        .domain(keys)
-        .range(colors);
-    
+      var color = d3.scaleOrdinal().domain(keys).range(colors);
       //stack the data
       var stackedData = d3.stack()
         .offset(d3.stackOffsetSilhouette)
@@ -123,11 +128,8 @@ export class Streamgraph {
         .curve(d3.curveMonotoneX);
     
       // Show the areas
-      this.svg
-        .selectAll("mylayers")
-        .data(stackedData)
-        .enter()
-        .append("path")
+      this.svg.selectAll("mylayers").data(stackedData)
+        .enter().append("path")
           .style("fill", function(d) { return color(d.key); })
           .attr("d", area);
     }
