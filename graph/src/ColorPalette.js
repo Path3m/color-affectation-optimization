@@ -1,4 +1,3 @@
-import { HeatMap } from "../../stat/HeatMap.js";
 import * as util from "./utilitaire.js";
 
 //NB : to use in accordance with a factory class ?
@@ -28,6 +27,18 @@ export class ColorPalette{
         const colors = new Array(count);
         for(let i=0; i<count; i++) colors[i] = colorInterpol((i/count)*(range.max-range.min)+range.min);
         return new ColorPalette(colors, colorInterpol);
+    }
+
+    /**
+     * Change the color in the palette
+     * @param {*} colorInterpol 
+     * @returns 
+     */
+    changeColor(colorInterpol){
+        let tmpPalette = ColorPalette.buildPalette(this.colors.length, {min:0.1, max:0.9}, colorInterpol);
+        this.colors = tmpPalette.colors;
+        this.builder = colorInterpol;
+        return this;
     }
 
     /**

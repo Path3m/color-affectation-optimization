@@ -17,26 +17,31 @@
 
     <!-- to use box plot -->
     <script src="https://cdn.plot.ly/plotly-2.32.0.min.js" charset="utf-8"></script>
+    
+    <!-- to change the color of the palette -->
+    <script type="module">
+        import {globalPalette, changePalette} from "./data/build.js";
+
+        globalPalette.draw("color-palette");
+        window.changePalette = changePalette;
+    </script>
+
 </head>
 
 <body>
-    <nav>
+    <nav class="topnav">
+        <a class="active" href="./index.html">Main Page</a>
         <a href="./musicStreamgraph.html">Music listening among time</a>
         <a href="./usNamesStreamgraph.html">USA Names among time</a>
     </nav>
     
-    <p fontsize="30">
+    <p fontsize="30" fontstyle="bold">
         Main color palette used throughout the color representation.
     </p>
-    <div class="heatmap-container" id="color-palette"></div>
-    <div class="heatmap-container" id="color-dist-global-palette"></div>
+    <div class="palette-container" id="color-palette"></div>
+    <!-- <div class="heatmap-container" id="color-dist-global-palette"></div> -->
 
-    <script type="module">
-        import * as obj from "./data/build.js";
-
-        obj.globalPalette.draw("color-palette");
-        obj.CDMGlobal.draw("color-dist-global-palette");
-    </script>
+    <button id="myButton" onclick="changePalette('color-palette')">Change Color</button>
 </body>
 
 </html>
