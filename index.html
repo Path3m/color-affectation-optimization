@@ -20,8 +20,9 @@
     
     <!-- to change the color of the palette -->
     <script type="module">
-        import {globalPalette, changePalette} from "./data/build.js";
+        import {globalPalette, changePalette, obg} from "./data/build.js";
 
+        obg.draw("optigen-plot");
         globalPalette.draw("color-palette");
         window.changePalette = changePalette;
     </script>
@@ -35,13 +36,15 @@
         <a href="./usNamesStreamgraph.html">USA Names among time</a>
     </nav>
     
-    <p fontsize="30" fontstyle="bold">
+    <p fontsize="30">
         Main color palette used throughout the color representation.
     </p>
-    <div class="palette-container" id="color-palette"></div>
+    <div class="heatmap-container" id="color-palette"></div>
     <!-- <div class="heatmap-container" id="color-dist-global-palette"></div> -->
 
     <button id="myButton" onclick="changePalette('color-palette')">Change Color</button>
+
+    <div class="boxplot-container" id="optigen-plot"></div>
 </body>
 
 </html>
