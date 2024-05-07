@@ -196,7 +196,7 @@ export class Streamgraph {
           importance[voisin][categorie] = importance[categorie][voisin];
         }
       }
-      return importance;
+      return {elementaire: elementaire, global:importance};
     }
 
     //---------------------------------------------------------------
@@ -239,5 +239,18 @@ export class Streamgraph {
       }
 
       return importance;
+    }
+
+    /**
+     * Compute matrix importance according to the given method
+     * @param {ImportanceMethod} method 
+     * @returns the elementary importance if defined, the global imortance always
+     */
+    importance(method){
+      if(method.isAccumulateMethod()){
+        return {elementaire: undefined, global: this.computeImportanceMatrixInPlace(method.accumulate)};
+      }else{
+        return this.computeGlobalImportance(method.global, method.local); 
+      }
     }
 }

@@ -25,32 +25,63 @@ function localAvgInverse(h1,h2){return (inverse(h1)+inverse(h2))/2; }
 function GlobalMax (array){ return Math.max(...array); }
 function GlobalMean(array){ return (array.reduce((acc,current) => { return acc + current; })) / array.length; }
 
+//------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------
+export class ImportanceMethod {
+    /**
+     * Build a method that compute importance
+     * @param {*} global 
+     * @param {*} local 
+     * @param {*} accumulate 
+     * @returns 
+     */
+    constructor(global, local, accumulate) {
+        this.global = global;
+        this.local = local;
+        this.accumulate = accumulate;
+    }
+
+    isAccumulateMethod(){
+        return this.accumulate != undefined && this.local == undefined && this.global == undefined;
+    }
+
+    /**
+     * Compute the name of the method
+     * @returns the name of the this method as a string
+     */
+    name(){
+        return (
+            (this.global == undefined) ?
+                this.accumulate.name :
+            (this.local == undefined) ?
+                this.global.name :
+                "< "+this.global.name+" - "+this.local.name+" >"
+        );
+    }
+}
+
 /**
  * Compute the importance by getting the maximum of the inverse
  */
-export const impMaxInverse = [ GlobalMax, localMaxInverse ];
+export const impMaxInverse = new ImportanceMethod(GlobalMax, localMaxInverse, undefined);
 
 /**
  * Compute the importance by getting the average value of the local importance
  * Local importance takes the max of the heights inverse
  */
-export const impAverage = [ GlobalMean, localMaxInverse ];
+export const impAverage = new ImportanceMethod(GlobalMean, localMaxInverse, undefined);
 
 /**
- * Given a method, that is a function or an array of function,
- * compute its name
- * @param {function | Array<function>} method
- * @return the name of the method under the form of a string
+ * Compute the importance by accumumlating the maximum of local inverse
  */
-export function name(method){
-    if(typeof method === 'function') return method.name;
+export const accMaxInverse = new ImportanceMethod(undefined, undefined,
+    (acc,y,z) => Math.max(acc, 1/y, 1/z)
+);
 
-    let name = "";
-    method.forEach(current => {name += current.name+"; "; });
-    return name;
-}
-
-
-
-export function accInverse(acc,y,z){ return Math.max(acc, 1/y, 1/z); }
-export function sumInverse(acc,y,z){ return acc + 1/y + 1/z; }
+/**
+ * Compute the importance by summation of the inverse
+ */
+export const accSumInverse = new ImportanceMethod(undefined, undefined,
+    (acc,y,z) => acc + 1/y + 1/z
+);

@@ -1,6 +1,6 @@
 import { ColorPalette } from "../graph/src/ColorPalette.js";
 import {Streamgraph} from "../graph/src/Streamgraph.js";
-import {name} from "../graph/src/computationMethod.js";
+import {ImportanceMethod} from "../graph/src/computationMethod.js";
 
 export class HeatMap{
     /**
@@ -47,31 +47,23 @@ export class HeatMap{
     }
 
     /**
-     * 
+     * Return the corresponding heatmap from an importance matrix
      * @param {*} container 
      * @param {*} graph 
      * @param {*} computeMethod 
      * @returns 
      */
     static importanceHeatMap(graph, computeMethod, container){
-        let importance = [];
-        switch(computeMethod.length){
-          case 1: importance = graph.computeImportanceMatrixInPlace(computeMethod[0]); break;
-          case 2: importance = graph.computeGlobalImportance(computeMethod[0], computeMethod[1]); break;
-          default:
-            console.log("no method to compute importance");
-            importance = graph.computeImportanceMatrixInPlace(Math.max);
-        }
-
+        let importance = graph.importance(computeMethod);
         let categories = graph.getCategories();
 
         return new HeatMap(
-            importance, categories, "Importance : "+name(computeMethod), container
+            importance.global, categories, "Importance : "+computeMethod.name(), container
         );
     }
 
     /**
-     * 
+     * Return the corresponding heatmap from a color distance matrix
      * @param {*} container 
      * @param {*} colorRange 
      */
