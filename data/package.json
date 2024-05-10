@@ -1,0 +1,9 @@
+{
+    "name": "data-const",
+    "version": "1.0.0",
+    "description": "declare variable of test and string of data",
+    "main": "build.js",
+    "type": "module", 
+    "dependencies": {
+    }
+}
