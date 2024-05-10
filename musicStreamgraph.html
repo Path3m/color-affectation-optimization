@@ -29,7 +29,8 @@
     <!-- Part music -->
     <div id="streamgraph1"></div>
     <div class="palette-container" id="color-music"></div>
-    <div class="heatmap-container" id="color-dist-music-palette"></div>
+    <div class="heatmap-container" id="dist-bef-opti"></div>
+    <div class="heatmap-container" id="dist-aft-opti"></div>
 
 
     <div class="heatmap-container" id="heatmapMusic-1"></div>
@@ -42,6 +43,12 @@
         import {AffectationScore} from "./graph/src/AffectationScore.js";
         import {Permutation} from "./optigen/src/Permutation.js";
 
+        import {HeatMap} from "./stat/HeatMap.js";
+
+        obj.colorMusic.colors = obj.musicAffect.affectTo(obj.bestGenome);
+        console.log(obj.colorMusic.colors);
+        let CDMAfter = HeatMap.colorDistanceHeatMap(obj.colorMusic, obj.music);
+
         obj.graphDayMusique.draw(
             obj.colorMusic.colors,
             "#streamgraph1"
@@ -49,19 +56,11 @@
 
         obj.colorMusic.draw("color-music", obj.music);
 
-        obj.CDMMusic.draw("color-dist-music-palette");
+        obj.CDMMusic.draw("dist-bef-opti");
+        CDMAfter.draw("dist-aft-opti");
+
         obj.IMMusic1.draw("heatmapMusic-1");
         obj.IMMusic2.draw("heatmapMusic-2");
-
-        
-        let affscore = new AffectationScore(
-            obj.graphDayMusique, 
-            method.impMaxInverse, 
-            obj.colorMusic);
-            
-        console.log(affscore.score(
-            Permutation.index(21)
-        ));
     </script>
 </body>
 

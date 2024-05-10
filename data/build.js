@@ -9,6 +9,7 @@ import { HeatMap } from "../stat/HeatMap.js";
 import { OptigenBoxPlot } from "../stat/BoxPlot.js";
 
 import * as dataset from "./dataset.js";
+import { AffectationScore } from "../graph/src/AffectationScore.js";
 
 
 //INITIATING GLOBAL PALETTE ----------------------------------------------------
@@ -18,7 +19,7 @@ export const CDMGlobal     = HeatMap.colorDistanceHeatMap(globalPalette);
 // MUSIC Graph info ------------------------------------------------------------
 export const graphDayMusique = new Streamgraph(dataset.dmFilterAlternative);
 export const music           = graphDayMusique.getCategories();
-export var colorMusic        = globalPalette.paletteSample(music.length).shuffle();
+export var colorMusic        = globalPalette.paletteSample(music.length);
 
 export const CDMMusic = HeatMap.colorDistanceHeatMap(colorMusic, music);
 export const IMMusic1 = HeatMap.importanceHeatMap(graphDayMusique, method.impMaxInverse);
@@ -28,14 +29,25 @@ export const IMMusic2 = HeatMap.importanceHeatMap(graphDayMusique, method.impAve
 // US NAMES Graph Info ---------------------------------------------------------
 export const graphUsaNames = new Streamgraph(dataset.usaNames);
 export const names         = graphUsaNames.getCategories();
-export var colorNames      = globalPalette.paletteSample(names.length).shuffle();
+export var colorNames      = globalPalette.paletteSample(names.length);
 
 export const CDMNames = HeatMap.colorDistanceHeatMap(colorNames, names);
 export const IMNames1 = HeatMap.importanceHeatMap(graphUsaNames, method.impMaxInverse);
 export const IMNames2 = HeatMap.importanceHeatMap(graphUsaNames, method.impAverage);
 
 // OPTIGEN box plot ---------------------------------------------------------
-export const obg = new OptigenBoxPlot(Optigen.optigen(score));
+export const musicAffect = new AffectationScore(graphDayMusique, method.impMaxInverse, colorMusic);
+export var scoring = musicAffect.score.bind(musicAffect);
+
+export const optigenScore = new Optigen(
+    scoring,
+    {limit: 25, generation: 100, individual: 21}
+);
+
+var geneticResult = optigenScore.execute();
+export const bestGenome = geneticResult.last.members[0].genome;
+
+export const obg = new OptigenBoxPlot(geneticResult);
 
 //CHANGE COLOR PALETTE ------------------------------------------------------
 let count = 0;
