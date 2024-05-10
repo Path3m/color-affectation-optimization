@@ -38,6 +38,10 @@
     <script type="module">
         import * as obj from "./data/build.js";
 
+        import * as method from "./graph/src/computationMethod.js";
+        import {AffectationScore} from "./graph/src/AffectationScore.js";
+        import {Permutation} from "./optigen/src/Permutation.js";
+
         obj.graphDayMusique.draw(
             obj.colorMusic.colors,
             "#streamgraph1"
@@ -48,6 +52,16 @@
         obj.CDMMusic.draw("color-dist-music-palette");
         obj.IMMusic1.draw("heatmapMusic-1");
         obj.IMMusic2.draw("heatmapMusic-2");
+
+        
+        let affscore = new AffectationScore(
+            obj.graphDayMusique, 
+            method.impMaxInverse, 
+            obj.colorMusic);
+            
+        console.log(affscore.score(
+            Permutation.index(21)
+        ));
     </script>
 </body>
 

@@ -20,11 +20,11 @@
     
     <!-- to change the color of the palette -->
     <script type="module">
-        import {globalPalette, changePalette, obg} from "./data/build.js";
+        import * as obj from "./data/build.js";
 
-        obg.draw("optigen-plot");
-        globalPalette.draw("color-palette");
-        window.changePalette = changePalette;
+        obj.obg.draw("optigen-plot");
+        obj.globalPalette.draw("color-palette");
+        window.changePalette = obj.changePalette;
     </script>
 
 </head>
