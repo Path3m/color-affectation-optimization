@@ -35,7 +35,7 @@ export const CDMNames = HeatMap.colorDistanceHeatMap(colorNames, names);
 export const IMNames1 = HeatMap.importanceHeatMap(graphUsaNames, method.impMaxInverse);
 export const IMNames2 = HeatMap.importanceHeatMap(graphUsaNames, method.impAverage);
 
-// OPTIGEN box plot ---------------------------------------------------------
+// OPTIGEN  -----------------------------------------------------------------
 export const musicAffect = new AffectationScore(graphDayMusique, method.impMaxInverse, colorMusic);
 export var scoring = musicAffect.score.bind(musicAffect);
 
