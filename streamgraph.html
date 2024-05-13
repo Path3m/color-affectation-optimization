@@ -22,24 +22,25 @@
 <body>
     <nav class="topnav">
         <a href="./index.html">Main Page</a>
-        <a class="active" href="./streamgraph.html">Music listening among time</a>
-        <a href="./usNamesStreamgraph.html">USA Names among time</a>
+        <a class="active" href="./streamgraph.html">Streamchart example</a>
     </nav>
 
     <button id="dataToMusic" onclick="setStreamChart(0,'streamgraph1')">Music listening among time</button>
     <button id="dataToNames" onclick="setStreamChart(1,'streamgraph1')">Usa name during the past century</button>
+    <button id="next-data" onclick="setStreamChart(++currentSG,'streamgraph1')">Next Data</button>
 
     <!-- Part music -->
     <div id="streamgraph1"></div>
 
-    <button id="optimize" onclick="optimizeColor(currentStreamChart.graph, currentStreamChart.palette, 'streamgraph1', 'color-graph')">Optimize Color</button>
-    <button id="random" onclick="randomColor(currentStreamChart.graph, currentStreamChart.palette, 'streamgraph1', 'color-graph')">Random Color</button>
-    <button id="reset" onclick="resetColor(currentStreamChart.graph, currentStreamChart.palette, 'streamgraph1', 'color-graph')">Reset Color</button>
+    <button id="optimize" onclick="optimizeColor(streamchart.graph, streamchart.palette, 'streamgraph1', 'color-graph')">Optimize Color</button>
+    <button id="random" onclick="randomColor(streamchart.graph, streamchart.palette, 'streamgraph1', 'color-graph')">Random Color</button>
+    <button id="reset" onclick="resetColor(streamchart.graph, streamchart.palette, 'streamgraph1', 'color-graph')">Reset Color</button>
 
     <div class="palette-container" id="color-graph"></div>
     <div class="heatmap-container" id="color-dist-palette"></div>
     <div class="heatmap-container" id="color-dist-affect"></div>
     <div class="heatmap-container" id="importance"></div>
+    <div class="boxplot-container" id="optigen-stat"></div>
 
 
     <script type="module">

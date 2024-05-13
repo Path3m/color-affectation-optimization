@@ -15,6 +15,7 @@ div {
 .boxplot-container {
   width: 60%;
   height: 60%;
+  margin: 10%;
   aspect-ratio: 1.6;
 }
 
