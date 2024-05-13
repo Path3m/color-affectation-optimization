@@ -34,6 +34,19 @@ export class Streamgraph {
       return this.data.columns.slice(1);
     }
 
+    /**
+     * Get the values of the categories identified by its name
+     * @param {*} name 
+     * @returns 
+     */
+    getCategorie(name){
+      let values = new Array();
+      this.data.forEach(current => {
+        values.push(current[name]);
+      });
+      return {name: name, values: values};
+    }
+
     //-------------------------------------------------------------------
     /**
      * Initialize the string containing an svg object informations
