@@ -26,20 +26,21 @@
         <a href="./usNamesStreamgraph.html">USA Names among time</a>
     </nav>
 
+    <button id="dataToMusic" onclick="setStreamChart(0,'streamgraph1')">Music listening among time</button>
+    <button id="dataToNames" onclick="setStreamChart(1,'streamgraph1')">Usa name during the past century</button>
+
     <!-- Part music -->
     <div id="streamgraph1"></div>
 
-    <button id="optimize" onclick="optimizeColor()">Optimize Color</button>
-    <button id="random" onclick="randomColor()">Random Color</button>
-    <button id="reset" onclick="resetColor()">Reset Color</button>
+    <button id="optimize" onclick="optimizeColor(currentStreamChart.graph, currentStreamChart.palette, 'streamgraph1', 'color-graph')">Optimize Color</button>
+    <button id="random" onclick="randomColor(currentStreamChart.graph, currentStreamChart.palette, 'streamgraph1', 'color-graph')">Random Color</button>
+    <button id="reset" onclick="resetColor(currentStreamChart.graph, currentStreamChart.palette, 'streamgraph1', 'color-graph')">Reset Color</button>
 
-    <div class="palette-container" id="color-music"></div>
-    <div class="heatmap-container" id="dist-bef-opti"></div>
-    <div class="heatmap-container" id="dist-aft-opti"></div>
+    <div class="palette-container" id="color-graph"></div>
+    <div class="heatmap-container" id="color-dist-palette"></div>
+    <div class="heatmap-container" id="color-dist-affect"></div>
+    <div class="heatmap-container" id="importance"></div>
 
-
-    <div class="heatmap-container" id="heatmapMusic-1"></div>
-    <div class="heatmap-container" id="heatmapMusic-2"></div>
 
     <script type="module">
         import * as obj from "./data/build.js";
@@ -51,56 +52,7 @@
 
         import {HeatMap} from "./stat/HeatMap.js";
 
-        obj.graphDayMusique.draw(obj.colorMusic.colors, "#streamgraph1");
-        obj.colorMusic.draw("color-music", obj.music);
-
-        obj.CDMMusic.draw("dist-bef-opti");
-        obj.IMMusic1.draw("heatmapMusic-1");
-        obj.IMMusic2.draw("heatmapMusic-2");
-
-        window.optimizeColor = () =>{
-            document.getElementById("streamgraph1").innerHTML = "";
-            document.getElementById("dist-aft-opti").innerHTML = "";
-            document.getElementById("color-music").innerHTML = "";
-
-            let optimisedColors = obj.musicAffect.affectTo(obj.bestGenome);
-            //let CDMAfter = HeatMap.colorDistanceHeatMap(obj.colorMusic, obj.music);
-
-            obj.graphDayMusique.svg = "";
-            console.log(obj.graphDayMusique);
-            obj.graphDayMusique.draw(optimisedColors, "#streamgraph1");
-            //CDMAfter.draw("dist-aft-opti");
-            new ColorPalette(optimisedColors, undefined).draw("color-music", obj.music);
-        }
-
-        window.randomColor = () =>{
-            document.getElementById("streamgraph1").innerHTML = "";
-            document.getElementById("dist-aft-opti").innerHTML = "";
-            document.getElementById("color-music").innerHTML = "";
-
-            let randomColor = Permutation.copyShuffle(obj.colorMusic.colors)
-            Permutation.randSwap(Permutation.inplaceShuffle(randomColor));
-            //let CDMAfter = HeatMap.colorDistanceHeatMap(obj.colorMusic, obj.music);
-
-            obj.graphDayMusique.svg = "";
-            console.log(obj.graphDayMusique);
-            obj.graphDayMusique.draw(randomColor, "#streamgraph1");
-            //CDMAfter.draw("dist-aft-opti");
-            new ColorPalette(randomColor, undefined).draw("color-music", obj.music);
-        }
-
-        window.resetColor = () => {
-            document.getElementById("streamgraph1").innerHTML = "";
-            document.getElementById("dist-aft-opti").innerHTML = "";
-            document.getElementById("color-music").innerHTML = "";
-            //let CDMAfter = HeatMap.colorDistanceHeatMap(obj.colorMusic, obj.music);
-
-            obj.graphDayMusique.svg = "";
-            console.log(obj.graphDayMusique);
-            obj.graphDayMusique.draw(obj.colorMusic.colors, "#streamgraph1");
-            //CDMAfter.draw("dist-aft-opti");
-            new ColorPalette(obj.colorMusic.colors, undefined).draw("color-music", obj.music);
-        }
+        graphDayMusique.draw(colorMusic.colors, "streamgraph1");
     </script>
 </body>
 
