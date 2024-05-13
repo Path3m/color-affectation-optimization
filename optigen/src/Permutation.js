@@ -15,7 +15,9 @@ export class Permutation{
     * @returns the copy of the given array shuffled
     */
     static copyShuffle(array){
-        let newarray = array.slice();
+        let rand = Math.floor(Math.random() * array.length + 1);
+        let newarray = Permutation.toShiftLeft(array, rand);
+        for(let i=0; i < rand; i++) Permutation.randSwap(newarray);
         return newarray.sort((a,b) => 0.5 - Math.random());
     }
 
@@ -25,6 +27,8 @@ export class Permutation{
     * @returns a reference to the given array now shuffled
     */
     static inplaceShuffle(array){
+        let rand = Math.floor(Math.random() * array.length + 1);
+        for(let i=0; i < rand; i++) Permutation.randSwap(array);
         return array.sort((a,b) => 0.5 - Math.random());
     }
 
