@@ -17,11 +17,6 @@ import { AffectationScore } from "../graph/src/AffectationScore.js";
 window.globalPalette = ColorPalette.largeGraphPalette(d3.interpolateViridis);
 window.CDMGlobal     = HeatMap.colorDistanceHeatMap(globalPalette);
 
-// MUSIC Graph info ------------------------------------------------------------
-window.graphDayMusique = new Streamgraph(dataset.dmFilterAlternative);
-window.music           = graphDayMusique.getCategories();
-window.colorMusic      = globalPalette.paletteSample(music.length);
-
 //CHANGE COLOR PALETTE ------------------------------------------------------
 let count = 0;
 const allInterpol = [
@@ -31,8 +26,26 @@ const allInterpol = [
     d3.interpolateSpectral
 ];
 
-function clearcontent(elementID) { 
-    document.getElementById(elementID).innerHTML = ""; 
+/**
+ * 
+ * @param {*} id 
+ * @param {*} elemType 
+ * @param {*} elemClass 
+ * @returns a referecence to this new or old element empty
+ */
+function renewElement(id, elemType, elemClass) { 
+    let element = document.getElementById(id);
+
+    if(element == undefined){
+        element = document.createElement(elemType);
+        element.classList.add(elemClass);
+        element.id = id;
+        document.body.appendChild(element);
+    }else{
+        element.innerHTML = ""; 
+    }
+    
+    return element;
 }
 
 /**
@@ -60,7 +73,7 @@ export function changePalette(divID){
  * @param {*} divPalette 
  */
 window.optimizeColor = (graph, palette, divGraph, divPalette) => {
-    clearcontent(divPalette);
+    renewElement(divPalette);
     let categories = graph.getCategories();
 
     let affect = new AffectationScore(graph, method.impAverage, palette);
@@ -75,15 +88,16 @@ window.optimizeColor = (graph, palette, divGraph, divPalette) => {
     graph.draw(newPalette.colors, divGraph);
     newPalette.draw(divPalette, categories);
 
-    clearcontent("optigen-stat");
-    clearcontent("color-dist-palette"); 
-    clearcontent("color-dist-affect"); 
-    clearcontent("importance");
+    renewElement("optigen-stat", "div", "boxplot-container");
+    renewElement("color-dist-palette", "div", "heatmap-container"); 
+    renewElement("color-dist-affect", "div", "heatmap-container"); 
+    renewElement("importance", "div", "heatmap-container");
+    
     HeatMap.colorDistanceHeatMap(palette).draw("color-dist-palette");
     HeatMap.colorDistanceHeatMap(newPalette, categories).draw("color-dist-affect");
     HeatMap.importanceHeatMap(graph, method.impAverage).draw("importance");
 
-    new OptigenBoxPlot(result, "optigen-stat").draw("optigen-stat");
+    new OptigenBoxPlot(result).draw("optigen-stat");
 }
 
 /**
@@ -94,7 +108,7 @@ window.optimizeColor = (graph, palette, divGraph, divPalette) => {
  * @param {*} divPalette 
  */
 window.randomColor = (graph, palette, divGraph, divPalette) => {
-    clearcontent(divPalette);
+    renewElement(divPalette);
 
     let randomColor = Permutation.copyShuffle(palette.colors);
 
@@ -110,7 +124,7 @@ window.randomColor = (graph, palette, divGraph, divPalette) => {
  * @param {*} divPalette 
  */
 window.resetColor = (graph, palette, divGraph, divPalette) => {
-    clearcontent(divPalette);
+    renewElement(divPalette);
 
     graph.draw(palette.colors, divGraph);
     new ColorPalette(palette.colors, undefined).draw(divPalette, graph.getCategories());

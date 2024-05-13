@@ -37,23 +37,12 @@
     <button id="reset" onclick="resetColor(streamchart.graph, streamchart.palette, 'streamgraph1', 'color-graph')">Reset Color</button>
 
     <div class="palette-container" id="color-graph"></div>
-    <div class="heatmap-container" id="color-dist-palette"></div>
-    <div class="heatmap-container" id="color-dist-affect"></div>
-    <div class="heatmap-container" id="importance"></div>
-    <div class="boxplot-container" id="optigen-stat"></div>
-
 
     <script type="module">
-        import * as obj from "./data/build.js";
+        import * as data from "./data/data-const/";
 
-        import * as method from "./graph/src/computationMethod.js";
-        import {AffectationScore} from "./graph/src/AffectationScore.js";
-        import {Permutation} from "./optigen/src/Permutation.js";
-        import {ColorPalette} from "./graph/src/ColorPalette.js";
-
-        import {HeatMap} from "./stat/HeatMap.js";
-
-        graphDayMusique.draw(colorMusic.colors, "streamgraph1");
+        streamchart.graph.draw(streamchart.palette.colors, "streamgraph1");
+        streamchart.palette.draw("color-graph", streamchart.graph.getCategories());
     </script>
 </body>
 
