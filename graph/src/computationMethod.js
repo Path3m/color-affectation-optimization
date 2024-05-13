@@ -23,7 +23,7 @@ function localAvgInverse(h1,h2){return (inverse(h1)+inverse(h2))/2; }
 
 //Helper to compute global importance
 function GlobalMax (array){ return Math.max(...array); }
-function GlobalMean(array){ return (array.reduce((acc,current) => { return acc + current; })) / array.length; }
+function GlobalMean(array){ return 100 * (array.reduce((acc,current) => { return acc + current; })) / array.length; }
 
 //------------------------------------------------------------------------------------
 //------------------------------------------------------------------------------------
