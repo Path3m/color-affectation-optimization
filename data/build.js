@@ -92,7 +92,7 @@ window.optimizeColor = (graph, palette, divGraph, divPalette) => {
     renewElement("color-dist-palette", "div", "heatmap-container"); 
     renewElement("color-dist-affect", "div", "heatmap-container"); 
     renewElement("importance", "div", "heatmap-container");
-    
+
     HeatMap.colorDistanceHeatMap(palette).draw("color-dist-palette");
     HeatMap.colorDistanceHeatMap(newPalette, categories).draw("color-dist-affect");
     HeatMap.importanceHeatMap(graph, method.impAverage).draw("importance");
@@ -139,10 +139,10 @@ let dataStreamgraph = [
     dataset.binary,
     dataset.truc    
 ];
-window.currentSG = 0;
+window.currentSG = 1;
 
-const defaultStreamgraph = new Streamgraph(dataStreamgraph[currentSG]);
-const defaultPalette = globalPalette.paletteSample(defaultStreamgraph.getCategories().length);
+export const defaultStreamgraph = new Streamgraph(dataStreamgraph[currentSG]);
+export const defaultPalette = globalPalette.paletteSample(defaultStreamgraph.getCategories().length);
 
 window.streamchart = {
     graph: defaultStreamgraph,
