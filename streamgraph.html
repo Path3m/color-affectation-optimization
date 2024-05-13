@@ -23,6 +23,7 @@
     <nav class="topnav">
         <a href="./index.html">Main Page</a>
         <a class="active" href="./streamgraph.html">Streamchart example</a>
+        <a href="./importance.html">importance Stat</a>
     </nav>
 
     <button id="dataToMusic" onclick="setStreamChart(0,'streamgraph1')">Music listening among time</button>
@@ -39,7 +40,7 @@
     <div class="palette-container" id="color-graph"></div>
 
     <script type="module">
-        import * as data from "./data/data-const/";
+        import * as obj from "./data/build.js";
 
         streamchart.graph.draw(streamchart.palette.colors, "streamgraph1");
         streamchart.palette.draw("color-graph", streamchart.graph.getCategories());
