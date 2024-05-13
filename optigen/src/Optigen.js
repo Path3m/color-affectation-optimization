@@ -91,4 +91,12 @@ export class Optigen{
     static optigen(score){
         return (new Optigen(score)).execute();
     }
+
+    /**
+     * Execute the optimisation and return the best individual found
+     * @returns 
+     */
+    getBestIndividual(){
+        return this.execute().last.members[0];
+    }
 }
