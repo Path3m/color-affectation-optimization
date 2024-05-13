@@ -43,7 +43,7 @@ export class Streamgraph {
         //TODO : implement a function that uses a css container to init the svg object ?    
     
         // append the svg object to the body of the page
-        return d3.select(divID)
+        return d3.select("#"+divID)
         .append("svg")
           .attr("width", this.width + this.margin.left + this.margin.right)
           .attr("height", this.height + this.margin.top + this.margin.bottom)
@@ -103,12 +103,16 @@ export class Streamgraph {
      */
     draw(colors, divID) {
       if(divID != undefined){
+        document.getElementById(divID).innerHTML = "";
         this.svg   = this.initSVG(divID);
         this.divID = divID;
+      }else{
+        document.getElementById(this.divID).innerHTML = "";
+        this.svg = this.initSVG(this.divID);
       }
 
       // List of categories = header of the csv files
-      var keys = this.data.columns.slice(1);
+      var keys = this.getCategories();
       var Xscale = (this.data.columns)[0]; //scale of the x axe
       // Add X and Y axis
       var x = this.addAbscissa(Xscale);
