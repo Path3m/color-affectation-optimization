@@ -22,11 +22,6 @@ window.graphDayMusique = new Streamgraph(dataset.dmFilterAlternative);
 window.music           = graphDayMusique.getCategories();
 window.colorMusic      = globalPalette.paletteSample(music.length);
 
-// US NAMES Graph Info ---------------------------------------------------------
-window.graphUsaNames = new Streamgraph(dataset.usaNames);
-window.names         = graphUsaNames.getCategories();
-window.colorNames    = globalPalette.paletteSample(names.length);
-
 //CHANGE COLOR PALETTE ------------------------------------------------------
 let count = 0;
 const allInterpol = [
@@ -46,7 +41,7 @@ function clearcontent(elementID) {
  * @param {*} divID 
  */
 export function changePalette(divID){
-    let interpol = allInterpol[count];
+    let interpol = allInterpol[(++count)%allInterpol.length];
     globalPalette.changeColor(interpol);
 
     colorMusic = globalPalette.paletteSample(music.length);
@@ -54,8 +49,6 @@ export function changePalette(divID){
 
     clearcontent(divID);
     globalPalette.draw(divID);
-
-    count = (count+1)%allInterpol.length;
 }
 
 // CHANGE THE COLOR OF THE GRAPH TO DISPLAY ------------------------------------------------------
@@ -66,7 +59,7 @@ export function changePalette(divID){
  * @param {*} divGraph 
  * @param {*} divPalette 
  */
-window.optimizeColor = (graph, palette, divGraph, divPalette) =>{
+window.optimizeColor = (graph, palette, divGraph, divPalette) => {
     clearcontent(divPalette);
     let categories = graph.getCategories();
 
@@ -75,16 +68,22 @@ window.optimizeColor = (graph, palette, divGraph, divPalette) =>{
         affect.score.bind(affect),
         {limit: 50, generation: 200, individual: categories.length}
     );
-    let best = optigen.getBestIndividual();
+    let result = optigen.execute()
+    let best = result.last.members[0];
     let newPalette = new ColorPalette(affect.affectTo(best.genome), undefined);
 
     graph.draw(newPalette.colors, divGraph);
     newPalette.draw(divPalette, categories);
 
-    clearcontent("color-dist-palette"); clearcontent("color-dist-affect"); clearcontent("importance");
+    clearcontent("optigen-stat");
+    clearcontent("color-dist-palette"); 
+    clearcontent("color-dist-affect"); 
+    clearcontent("importance");
     HeatMap.colorDistanceHeatMap(palette).draw("color-dist-palette");
     HeatMap.colorDistanceHeatMap(newPalette, categories).draw("color-dist-affect");
     HeatMap.importanceHeatMap(graph, method.impAverage).draw("importance");
+
+    new OptigenBoxPlot(result, "optigen-stat").draw("optigen-stat");
 }
 
 /**
@@ -94,7 +93,7 @@ window.optimizeColor = (graph, palette, divGraph, divPalette) =>{
  * @param {*} divGraph 
  * @param {*} divPalette 
  */
-window.randomColor = (graph, palette, divGraph, divPalette) =>{
+window.randomColor = (graph, palette, divGraph, divPalette) => {
     clearcontent(divPalette);
 
     let randomColor = Permutation.copyShuffle(palette.colors);
@@ -118,16 +117,35 @@ window.resetColor = (graph, palette, divGraph, divPalette) => {
 }
 
 // CHANGE THE GRAPH TO DISPLAY -----------------------------------------------------------------
-let graph_palette = [
-    {graph:graphDayMusique, palette:colorMusic},
-    {graph:graphUsaNames, palette:colorNames}
+let dataStreamgraph = [
+    dataset.dmFilterAlternative,
+    dataset.usaNames,
+    dataset.dm10layers, 
+    dataset.dm11layers,
+    dataset.binary,
+    dataset.truc    
 ];
+window.currentSG = 0;
 
-window.currentStreamChart = graph_palette[0];
+const defaultStreamgraph = new Streamgraph(dataStreamgraph[currentSG]);
+const defaultPalette = globalPalette.paletteSample(defaultStreamgraph.getCategories().length);
 
+window.streamchart = {
+    graph: defaultStreamgraph,
+    palette: defaultPalette
+};
+
+/**
+ * Set the current streamgraph on data with given number
+ * @param {*} num 
+ * @param {*} divID 
+ */
 window.setStreamChart = (num, divID) => {
-    currentStreamChart = graph_palette[num%graph_palette.length];
-    console.log(currentStreamChart);
-
-    currentStreamChart.graph.draw(currentStreamChart.palette.colors, divID);
+    currentSG = num%dataStreamgraph.length;
+    let graph = new Streamgraph(dataStreamgraph[currentSG]);
+    let palette = globalPalette.paletteSample(graph.getCategories().length);
+    streamchart = { graph : graph, palette : palette };
+    
+    console.log(streamchart);
+    streamchart.graph.draw(streamchart.palette.colors, divID);
 }
