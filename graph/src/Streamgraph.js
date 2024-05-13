@@ -66,6 +66,12 @@ export class Streamgraph {
         this.svg.append("g")
           .attr("transform", "translate(0," + this.height + ")")
           .call(d3.axisBottom(x).ticks(20));
+
+        this.svg.append("text")
+          .attr("text-anchor", "end")
+          .attr("x", this.width)
+          .attr("y", this.height-30 )
+          .text("Time ("+scaleX+")");
         
         return x;
     }
