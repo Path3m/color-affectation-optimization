@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="./style.css"/>
+
+    <!-- to draw the streamgraph -->
+    <script src="https://d3js.org/d3.v6.js"></script>
+
+    <!-- to print heatmap : note that it can be done with d3, to see later on -->
+    <script src="https://cdn.anychart.com/releases/8.11.0/js/anychart-core.min.js"></script>
+    <script src="https://cdn.anychart.com/releases/8.11.0/js/anychart-heatmap.min.js"></script>
+
+    <!-- to compute distance between colors -->
+    <script src="https://cdn.jsdelivr.net/npm/culori"></script>
+
+    <!-- to use box plot and linechart -->
+    <script src="https://cdn.plot.ly/plotly-2.32.0.min.js" charset="utf-8"></script>
+    
+    <!-- to change the color of the palette -->
+    <script type="module">
+    </script>
+
+</head>
+
+<body>
+    <nav class="topnav">
+        <a href="./index.html">Main Page</a>
+        <a href="./streamgraph.html">Streamchart example</a>
+        <a class="active" href="./importance.html">Importance Stat</a>
+    </nav>
+
+    <div id="linechart"></div>
+
+    <script type="module">
+        import * as obj from "./data/build.js";
+        import * as method from "./graph/src/computationMethod.js";
+        import {Permutation} from "./optigen/src/Permutation.js";
+
+        let name1 = "Amanda"; 
+        let name2 = "Ashley";
+
+        let impElementary = obj.defaultStreamgraph.importance(method.impAverage).elementaire;
+
+        console.log(impElementary);
+        console.log(impElementary.get(name1+name2));
+
+        let firstCat = obj.defaultStreamgraph.getCategorie(name1);
+        let secondCat = obj.defaultStreamgraph.getCategorie(name2);
+        let xscale = Permutation.index(firstCat.values.length);
+
+        console.log(firstCat);
+        console.log(secondCat);
+
+        let trace1 = {
+            x: xscale,
+            y: firstCat.values,
+            name: firstCat.name,
+            mode: 'lines',
+            line: {
+              color: 'rgb(0, 255, 0)',
+              width: 3
+            }
+        }
+
+        let trace2 = {
+            x: xscale,
+            y: secondCat.values,
+            name: secondCat.name,
+            mode: 'lines',
+            line: {
+              color: 'rgb(255, 0, 0)',
+              width: 3
+            }
+        }
+
+        let trace3 = {
+            x: xscale,
+            y: impElementary.get(name1+name2),
+            name: "Importance "+name1+" / "+name2,
+            mode: 'lines',
+            line: {
+              color: 'rgb(0, 0, 255)',
+              width: 3
+            }
+        }
+
+        let data = [trace1, trace2, trace3];
+
+        var layout = {
+            title: 'Line and Scatter Styling'
+        };
+
+        Plotly.newPlot('linechart', data, layout);
+    </script>
+</body>
+
+</html>
