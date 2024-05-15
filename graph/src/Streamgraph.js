@@ -42,7 +42,7 @@ export class Streamgraph {
     getCategorie(name){
       let values = new Array();
       this.data.forEach(current => {
-        values.push(current[name]);
+        values.push(Number(current[name]));
       });
       return {name: name, values: values};
     }
