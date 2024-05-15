@@ -29,6 +29,7 @@
     <button id="dataToMusic" onclick="setStreamChart(0,'streamgraph1')">Music listening among time</button>
     <button id="dataToNames" onclick="setStreamChart(1,'streamgraph1')">Usa name during the past century</button>
     <button id="next-data" onclick="setStreamChart(++currentSG,'streamgraph1')">Next Data</button>
+    <button id="readData" onclick="readData()">Read Data</button>
 
     <!-- Part music -->
     <div id="streamgraph1"></div>
@@ -37,13 +38,21 @@
     <button id="random" onclick="randomColor(streamchart.graph, streamchart.palette, 'streamgraph1', 'color-graph')">Random Color</button>
     <button id="reset" onclick="resetColor(streamchart.graph, streamchart.palette, 'streamgraph1', 'color-graph')">Reset Color</button>
 
+    <input id="data" type="file" name="csvFile" accept=".csv">
+
     <div class="palette-container" id="color-graph"></div>
 
     <script type="module">
         import * as obj from "./data/build.js";
+        import * as data from "./csvfile/dataMusic10layers.csv";
 
         streamchart.graph.draw(streamchart.palette.colors, "streamgraph1");
         streamchart.palette.draw("color-graph", streamchart.graph.getCategories());
+
+        window.readData = () => {
+            let path = document.getElementById("data").value;
+            console.log(path);
+        }
     </script>
 </body>
 
