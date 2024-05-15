@@ -38,7 +38,7 @@ function renewElement(id, elemType, elemClass) {
 
     if(element == undefined){
         element = document.createElement(elemType);
-        element.classList.add(elemClass);
+        if(elemClass != undefined) element.classList.add(elemClass);
         element.id = id;
         document.body.appendChild(element);
     }else{
@@ -76,7 +76,7 @@ window.optimizeColor = (graph, palette, divGraph, divPalette) => {
     renewElement(divPalette);
     let categories = graph.getCategories();
 
-    let affect = new AffectationScore(graph, method.impAverage, palette);
+    let affect = new AffectationScore(graph, method.impMaxInverse, palette);
     let optigen = new Optigen(
         affect.score.bind(affect),
         {limit: 50, generation: 200, individual: categories.length}
@@ -88,16 +88,22 @@ window.optimizeColor = (graph, palette, divGraph, divPalette) => {
     graph.draw(newPalette.colors, divGraph);
     newPalette.draw(divPalette, categories);
 
+    let svg = affect.generateSVG(best.genome, 700);
+    console.log(svg);
+
     renewElement("optigen-stat", "div", "boxplot-container");
     renewElement("color-dist-palette", "div", "heatmap-container"); 
     renewElement("color-dist-affect", "div", "heatmap-container"); 
     renewElement("importance", "div", "heatmap-container");
+    renewElement("correlogram", "div");
 
     HeatMap.colorDistanceHeatMap(palette).draw("color-dist-palette");
     HeatMap.colorDistanceHeatMap(newPalette, categories).draw("color-dist-affect");
-    HeatMap.importanceHeatMap(graph, method.impAverage).draw("importance");
+    HeatMap.importanceHeatMap(graph, method.impMaxInverse).draw("importance");
 
     new OptigenBoxPlot(result).draw("optigen-stat");
+
+    document.getElementById("correlogram").innerHTML = svg;
 }
 
 /**
@@ -139,7 +145,7 @@ let dataStreamgraph = [
     dataset.binary,
     dataset.truc    
 ];
-window.currentSG = 1;
+window.currentSG = 0;
 
 export const defaultStreamgraph = new Streamgraph(dataStreamgraph[currentSG]);
 export const defaultPalette = globalPalette.paletteSample(defaultStreamgraph.getCategories().length);
