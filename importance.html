@@ -38,16 +38,22 @@
         import * as method from "./graph/src/computationMethod.js";
         import {Permutation} from "./optigen/src/Permutation.js";
 
-        let name1 = "Amanda"; 
-        let name2 = "Ashley";
+        let name1 = "Empire_of_the_Sun"; 
+        let name2 = "Fever_Ray";
 
-        let impElementary = obj.defaultStreamgraph.importance(method.impAverage).elementaire;
+        let elementary = obj.defaultStreamgraph.importance(method.impAverage).elementaire;
+        let impElementary = elementary.get(name1+name2);
 
         console.log(impElementary);
-        console.log(impElementary.get(name1+name2));
 
         let firstCat = obj.defaultStreamgraph.getCategorie(name1);
         let secondCat = obj.defaultStreamgraph.getCategorie(name2);
+
+        for(let i=0; i<secondCat.values.length; i++){
+            secondCat.values[i] += firstCat.values[i];
+            impElementary[i] *= 100000;
+        }
+
         let xscale = Permutation.index(firstCat.values.length);
 
         console.log(firstCat);
@@ -77,7 +83,7 @@
 
         let trace3 = {
             x: xscale,
-            y: impElementary.get(name1+name2),
+            y: impElementary,
             name: "Importance "+name1+" / "+name2,
             mode: 'lines',
             line: {
