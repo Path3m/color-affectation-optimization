@@ -31,6 +31,10 @@
     <button id="next-data" onclick="setStreamChart(++currentSG,'streamgraph1')">Next Data</button>
     <button id="readData" onclick="readData()">Read Data</button>
 
+    <!--  -->
+    <input type="file" id="file-input" />
+    <!--  -->
+
     <!-- Part music -->
     <div id="streamgraph1"></div>
 
@@ -38,13 +42,40 @@
     <button id="random" onclick="randomColor(streamchart.graph, streamchart.palette, 'streamgraph1', 'color-graph')">Random Color</button>
     <button id="reset" onclick="resetColor(streamchart.graph, streamchart.palette, 'streamgraph1', 'color-graph')">Reset Color</button>
 
-    <input id="data" type="file" name="csvFile" accept=".csv">
-
     <div class="palette-container" id="color-graph"></div>
 
     <script type="module">
         import * as obj from "./data/build.js";
-        import * as data from "./csvfile/dataMusic10layers.csv";
+        import {Streamgraph} from "./graph/src/Streamgraph.js";
+        import {ColorPalette} from "./graph/src/ColorPalette.js";
+
+        //------------------------------------------------------
+        function readSingleFile(e) {
+          var file = e.target.files[0];
+          if (!file) {
+            return;
+          }
+          var reader = new FileReader();
+          reader.onload = function(e) {
+            var contents = e.target.result;
+
+            renewElement("streamgraph1");
+            renewElement("color-graph");
+
+            streamchart.graph = new Streamgraph(contents, "streamgraph1");
+            streamchart.palette = globalPalette.paletteSample(streamchart.graph.getCategories().length);
+
+            streamchart.graph.draw(streamchart.palette.colors);
+            streamchart.palette.draw("color-graph", streamchart.graph.getCategories());
+          };
+          reader.readAsText(file);
+        }
+
+        document.getElementById('file-input')
+          .addEventListener('change', readSingleFile, false);
+        //------------------------------------------------------
+
+
 
         streamchart.graph.draw(streamchart.palette.colors, "streamgraph1");
         streamchart.palette.draw("color-graph", streamchart.graph.getCategories());

@@ -33,7 +33,7 @@ const allInterpol = [
  * @param {*} elemClass 
  * @returns a referecence to this new or old element empty
  */
-function renewElement(id, elemType, elemClass) { 
+window.renewElement = (id, elemType, elemClass) => { 
     let element = document.getElementById(id);
 
     if(element == undefined){
@@ -92,17 +92,9 @@ window.optimizeColor = (graph, palette, divGraph, divPalette) => {
     console.log(svg);
 
     renewElement("optigen-stat", "div", "boxplot-container");
-    renewElement("color-dist-palette", "div", "heatmap-container"); 
-    renewElement("color-dist-affect", "div", "heatmap-container"); 
-    renewElement("importance", "div", "heatmap-container");
     renewElement("correlogram", "div");
 
-    HeatMap.colorDistanceHeatMap(palette).draw("color-dist-palette");
-    HeatMap.colorDistanceHeatMap(newPalette, categories).draw("color-dist-affect");
-    HeatMap.importanceHeatMap(graph, method.impMaxInverse).draw("importance");
-
     new OptigenBoxPlot(result).draw("optigen-stat");
-
     document.getElementById("correlogram").innerHTML = svg;
 }
 
@@ -116,10 +108,13 @@ window.optimizeColor = (graph, palette, divGraph, divPalette) => {
 window.randomColor = (graph, palette, divGraph, divPalette) => {
     renewElement(divPalette);
 
+    let affect = new AffectationScore(graph, method.impMaxInverse, palette);
     let randomColor = Permutation.copyShuffle(palette.colors);
 
     graph.draw(randomColor, divGraph);
     new ColorPalette(randomColor, undefined).draw(divPalette, graph.getCategories());
+
+    
 }
 
 /**
@@ -132,6 +127,7 @@ window.randomColor = (graph, palette, divGraph, divPalette) => {
 window.resetColor = (graph, palette, divGraph, divPalette) => {
     renewElement(divPalette);
 
+    let affect = new AffectationScore(graph, method.impMaxInverse, palette);
     graph.draw(palette.colors, divGraph);
     new ColorPalette(palette.colors, undefined).draw(divPalette, graph.getCategories());
 }
