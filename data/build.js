@@ -27,10 +27,11 @@ const allInterpol = [
 ];
 
 /**
- * 
- * @param {*} id 
- * @param {*} elemType 
- * @param {*} elemClass 
+ * Create a new html element of given type and class if the given id return
+ * an undefined reference to the element, else set the content of the element to emtpy. 
+ * @param {*} id of the element to get
+ * @param {*} elemType kind of html element to create : div / p / h1 ...
+ * @param {*} elemClass the class of the element
  * @returns a referecence to this new or old element empty
  */
 window.renewElement = (id, elemType, elemClass) => { 
@@ -49,6 +50,15 @@ window.renewElement = (id, elemType, elemClass) => {
 }
 
 /**
+ * Remove an element given by its id
+ * @param {*} id 
+ */
+window.removeElement = (id) => {
+    let element = document.getElementById(id);
+    if(element != undefined) element.remove();
+}
+
+/**
  * Change color of the global palette and draw it into
  * the corresponding div section of the html page 
  * @param {*} divID 
@@ -64,74 +74,6 @@ export function changePalette(divID){
     globalPalette.draw(divID);
 }
 
-// CHANGE THE COLOR OF THE GRAPH TO DISPLAY ------------------------------------------------------
-/**
- * 
- * @param {*} graph 
- * @param {*} palette 
- * @param {*} divGraph 
- * @param {*} divPalette 
- */
-window.optimizeColor = (graph, palette, divGraph, divPalette) => {
-    renewElement(divPalette);
-    let categories = graph.getCategories();
-
-    let affect = new AffectationScore(graph, method.impMaxInverse, palette);
-    let optigen = new Optigen(
-        affect.score.bind(affect),
-        {limit: 50, generation: 200, individual: categories.length}
-    );
-    let result = optigen.execute()
-    let best = result.last.members[0];
-    let newPalette = new ColorPalette(affect.affectTo(best.genome), undefined);
-
-    graph.draw(newPalette.colors, divGraph);
-    newPalette.draw(divPalette, categories);
-
-    let svg = affect.generateSVG(best.genome, 700);
-    console.log(svg);
-
-    renewElement("optigen-stat", "div", "boxplot-container");
-    renewElement("correlogram", "div");
-
-    new OptigenBoxPlot(result).draw("optigen-stat");
-    document.getElementById("correlogram").innerHTML = svg;
-}
-
-/**
- * 
- * @param {*} graph 
- * @param {*} palette 
- * @param {*} divGraph 
- * @param {*} divPalette 
- */
-window.randomColor = (graph, palette, divGraph, divPalette) => {
-    renewElement(divPalette);
-
-    let affect = new AffectationScore(graph, method.impMaxInverse, palette);
-    let randomColor = Permutation.copyShuffle(palette.colors);
-
-    graph.draw(randomColor, divGraph);
-    new ColorPalette(randomColor, undefined).draw(divPalette, graph.getCategories());
-
-    
-}
-
-/**
- * 
- * @param {*} graph 
- * @param {*} palette 
- * @param {*} divGraph 
- * @param {*} divPalette 
- */
-window.resetColor = (graph, palette, divGraph, divPalette) => {
-    renewElement(divPalette);
-
-    let affect = new AffectationScore(graph, method.impMaxInverse, palette);
-    graph.draw(palette.colors, divGraph);
-    new ColorPalette(palette.colors, undefined).draw(divPalette, graph.getCategories());
-}
-
 // CHANGE THE GRAPH TO DISPLAY -----------------------------------------------------------------
 let dataStreamgraph = [
     dataset.dmFilterAlternative,
@@ -145,10 +87,12 @@ window.currentSG = 0;
 
 export const defaultStreamgraph = new Streamgraph(dataStreamgraph[currentSG]);
 export const defaultPalette = globalPalette.paletteSample(defaultStreamgraph.getCategories().length);
+export const defaultAffect = new AffectationScore(defaultStreamgraph, method.impMaxInverse, defaultPalette);
 
 window.streamchart = {
     graph: defaultStreamgraph,
-    palette: defaultPalette
+    palette: defaultPalette,
+    affectation: defaultAffect
 };
 
 /**
@@ -160,8 +104,90 @@ window.setStreamChart = (num, divID) => {
     currentSG = num%dataStreamgraph.length;
     let graph = new Streamgraph(dataStreamgraph[currentSG]);
     let palette = globalPalette.paletteSample(graph.getCategories().length);
-    streamchart = { graph : graph, palette : palette };
+    let affectation = new AffectationScore(graph, method.impMaxInverse, palette);
+    streamchart = { graph : graph, palette : palette, affectation : affectation };
     
     console.log(streamchart);
     streamchart.graph.draw(streamchart.palette.colors, divID);
+}
+
+// CHANGE THE COLOR OF THE GRAPH TO DISPLAY ------------------------------------------------------
+/**
+ * 
+ * @param {*} graph 
+ * @param {*} palette 
+ * @param {*} divGraph 
+ * @param {*} divPalette 
+ */
+window.optimizeColor = (divGraph, divPalette) => {
+    let graph = streamchart.graph;
+    let palette = streamchart.palette;
+    let affect = streamchart.affectation;
+
+    renewElement(divPalette);
+    let categories = graph.getCategories();
+
+    let optigen = new Optigen(
+        affect.score.bind(affect),
+        {limit: 50, generation: 200, individual: categories.length}
+    );
+    let result = optigen.execute()
+    let best = result.last.members[0];
+    let newPalette = new ColorPalette(affect.getColor(best.genome), undefined);
+
+    graph.draw(newPalette.colors, divGraph);
+    newPalette.draw(divPalette, categories);
+
+    renewElement("optigen-stat", "div", "boxplot-container");
+    renewElement("correlogram", "div", "square-container");
+
+    new OptigenBoxPlot(result).draw("optigen-stat");
+    document.getElementById("correlogram").innerHTML = affect.generateSVG(best.genome, 700);
+}
+
+/**
+ * 
+ * @param {*} graph 
+ * @param {*} palette 
+ * @param {*} divGraph 
+ * @param {*} divPalette 
+ */
+window.randomColor = (divGraph, divPalette) => {
+    let graph = streamchart.graph;
+    let palette = streamchart.palette;
+    let affect = streamchart.affectation;
+
+    renewElement(divPalette);
+    removeElement("optigen-stat");
+
+    let randomColor = Permutation.copyShuffle(palette.colors);
+
+    graph.draw(randomColor, divGraph);
+    new ColorPalette(randomColor, undefined).draw(divPalette, graph.getCategories());
+
+    let permutation = affect.getPermutation(randomColor);
+    console.log(affect);
+    console.log(permutation);
+
+    renewElement("correlogram", "div", "square-container");
+    document.getElementById("correlogram").innerHTML = affect.generateSVG(permutation, 700);
+}
+
+/**
+ * @param {*} divGraph 
+ * @param {*} divPalette 
+ */
+window.resetColor = (divGraph, divPalette) => {
+    let graph = streamchart.graph;
+    let palette = streamchart.palette;
+    let affect = streamchart.affectation;
+
+    renewElement(divPalette);
+    removeElement("optigen-stat");
+
+    graph.draw(palette.colors, divGraph);
+    palette.draw(divPalette, graph.getCategories());
+
+    renewElement("correlogram", "div", "square-container");
+    document.getElementById("correlogram").innerHTML = affect.generateSVG(affect.getPermutation(palette.colors), 700);
 }
