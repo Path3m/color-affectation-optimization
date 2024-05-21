@@ -10,11 +10,11 @@ import { HeatMap } from "../stat/HeatMap.js";
 import { OptigenBoxPlot } from "../stat/BoxPlot.js";
 
 import * as dataset from "./dataset.js";
-import { Affectation } from "../graph/src/AffectationScore.js";
+import { Affectation } from "../graph/src/Affectation.js";
 
 
 //INITIATING GLOBAL PALETTE ----------------------------------------------------
-window.globalPalette = ColorPalette.largeGraphPalette(d3.interpolateViridis);
+window.globalPalette = ColorPalette.largeGraphPalette(d3.interpolateMagma);
 window.CDMGlobal     = HeatMap.colorDistanceHeatMap(globalPalette);
 
 //CHANGE COLOR PALETTE ------------------------------------------------------
@@ -63,15 +63,33 @@ window.removeElement = (id) => {
  * the corresponding div section of the html page 
  * @param {*} divID 
  */
-export function changePalette(divID){
+window.changeGlobalPalette = (divID) => {
     let interpol = allInterpol[(++count)%allInterpol.length];
     globalPalette.changeColor(interpol);
 
-    colorMusic = globalPalette.paletteSample(music.length);
-    colorNames = globalPalette.paletteSample(names.length);
+    if(divID !== undefined){
+        renewElement(divID);
+        globalPalette.draw(divID);
+    }
+}
 
-    clearcontent(divID);
-    globalPalette.draw(divID);
+/**
+ * Change palette of current graph
+ * @param {*} divPalette 
+ */
+window.changeGraphPalette = (divPalette) => {
+    changeGlobalPalette();
+    let categories = streamchart.graph.getCategories();
+
+    streamchart.palette = globalPalette.paletteSample(categories.length);
+    streamchart.affectation.setPalette(streamchart.palette);
+
+    console.log(streamchart);
+    
+    renewElement(divPalette);
+
+    streamchart.graph.draw(streamchart.palette.colors);
+    streamchart.palette.draw(divPalette, categories);
 }
 
 // CHANGE THE GRAPH TO DISPLAY -----------------------------------------------------------------
@@ -100,7 +118,7 @@ window.streamchart = {
  * @param {*} num 
  * @param {*} divID 
  */
-window.setStreamChart = (num, divID) => {
+window.setStreamChart = (num, divGraph, divPalette) => {
     currentSG = num%dataStreamgraph.length;
     let graph = new Streamgraph(dataStreamgraph[currentSG]);
     let palette = globalPalette.paletteSample(graph.getCategories().length);
@@ -108,7 +126,10 @@ window.setStreamChart = (num, divID) => {
     streamchart = { graph : graph, palette : palette, affectation : affectation };
     
     console.log(streamchart);
-    streamchart.graph.draw(streamchart.palette.colors, divID);
+    streamchart.graph.draw(streamchart.palette.colors, divGraph);
+
+    renewElement(divPalette);
+    streamchart.palette.draw(divPalette, streamchart.graph.getCategories());
 }
 
 // CHANGE THE COLOR OF THE GRAPH TO DISPLAY ------------------------------------------------------
@@ -121,7 +142,6 @@ window.setStreamChart = (num, divID) => {
  */
 window.optimizeColor = (divGraph, divPalette) => {
     let graph = streamchart.graph;
-    let palette = streamchart.palette;
     let affect = streamchart.affectation;
 
     renewElement(divPalette);
@@ -138,8 +158,8 @@ window.optimizeColor = (divGraph, divPalette) => {
     graph.draw(newPalette.colors, divGraph);
     newPalette.draw(divPalette, categories);
 
-    renewElement("optigen-stat", "div", "boxplot-container");
     renewElement("correlogram", "div", "square-container");
+    renewElement("optigen-stat", "div", "boxplot-container");
 
     new OptigenBoxPlot(result).draw("optigen-stat");
     document.getElementById("correlogram").innerHTML = affect.generateSVG(best.genome, 700);

@@ -23,7 +23,6 @@
         import * as obj from "./data/build.js";
 
         globalPalette.draw("color-palette");
-        window.changePalette = obj.changePalette;
     </script>
 
 </head>
@@ -35,15 +34,12 @@
         <a href="./importance.html">Importance Stat</a>
     </nav>
 
-    <div class="heatmap-container" id="color-palette">
+    <div>
         Main color palette used throughout the color representation.
+        <button id="myButton" onclick="changeGlobalPalette('color-palette')">Change Color</button>
+        <div class="heatmap-container" id="color-palette"></div>
     </div>
     
-    <!-- <div class="heatmap-container" id="color-dist-global-palette"></div> -->
-
-    <button id="myButton" onclick="changePalette('color-palette')">Change Color</button>
-
-    <div class="boxplot-container" id="optigen-plot"></div>
 </body>
 
 </html>
