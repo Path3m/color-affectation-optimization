@@ -19,6 +19,28 @@ export class Affectation{
     }
 
     /**
+     * Set a new color palette to affect to the graph
+     * @param {*} colorPalette 
+     */
+    setPalette(colorPalette){
+        this.distance = colorPalette.computeDistanceMatrix();
+        this.colorMap = {};
+        for(let i=0; i<colorPalette.colors.length; this.colorMap[i] = colorPalette.colors[i++]);
+    }
+
+    /**
+     * Set a new graph to match the color palette
+     * @param {*} graph 
+     * @param {*} method 
+     */
+    setGraph(graph, method){
+        this.importance = graph.importance(method);
+        const categories = graph.getCategories();
+        this.categorieMap = {};
+        for(let i=0; i<categories.length; this.categorieMap[i] = categories[i++]);
+    }
+
+    /**
      * Compute the score of a permutation
      * using the importance and distance matrix
      * @param {*} permutation 
