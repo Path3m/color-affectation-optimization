@@ -52,6 +52,30 @@
         import {Affectation} from "./graph/src/Affectation.js";
         import * as method from "./graph/src/computationMethod.js";
 
+        //------------------------------------------------------
+        function readSingleFile(e) {
+          var file = e.target.files[0];
+          if (!file) return;
+          var reader = new FileReader();
+          reader.onload = function(e) {
+            var contents = e.target.result;
+
+            renewElement("streamgraph1");
+            renewElement("color-graph");
+
+            streamchart.graph = new Streamgraph(contents, "streamgraph1");
+            streamchart.palette = globalPalette.paletteSample(streamchart.graph.getCategories().length);
+            streamchart.affectation = new Affectation(streamchart.graph, method.impMaxInverse, streamchart.palette);
+
+            streamchart.graph.draw(streamchart.palette.colors);
+            streamchart.palette.draw("color-graph", streamchart.graph.getCategories());
+          };
+          reader.readAsText(file);
+        }
+
+        document.getElementById('file-input').addEventListener('change', readSingleFile, false);
+        //------------------------------------------------------
+
         streamchart.graph.draw(streamchart.palette.colors, "streamgraph1");
         streamchart.palette.draw("color-graph", streamchart.graph.getCategories());
     </script>
