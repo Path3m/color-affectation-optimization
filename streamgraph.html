@@ -38,23 +38,25 @@
     <!-- Part music -->
     <div id="streamgraph1"></div>
 
-    <button id="optimize" onclick="optimizeColor(streamchart.graph, streamchart.palette, 'streamgraph1', 'color-graph')">Optimize Color</button>
-    <button id="random" onclick="randomColor(streamchart.graph, streamchart.palette, 'streamgraph1', 'color-graph')">Random Color</button>
-    <button id="reset" onclick="resetColor(streamchart.graph, streamchart.palette, 'streamgraph1', 'color-graph')">Reset Color</button>
+    <button id="optimize" onclick="optimizeColor('streamgraph1', 'color-graph')">Optimize Color</button>
+    <button id="random" onclick="randomColor('streamgraph1', 'color-graph')">Random Color</button>
+    <button id="reset" onclick="resetColor('streamgraph1', 'color-graph')">Reset Color</button>
 
     <div class="palette-container" id="color-graph"></div>
+    <div class="palette-container" id="color-bitmap"></div>
+    
 
     <script type="module">
         import * as obj from "./data/build.js";
         import {Streamgraph} from "./graph/src/Streamgraph.js";
         import {ColorPalette} from "./graph/src/ColorPalette.js";
+        import {AffectationScore} from "./graph/src/AffectationScore.js";
+        import * as method from "./graph/src/computationMethod.js";
 
         //------------------------------------------------------
         function readSingleFile(e) {
           var file = e.target.files[0];
-          if (!file) {
-            return;
-          }
+          if (!file) return;
           var reader = new FileReader();
           reader.onload = function(e) {
             var contents = e.target.result;
@@ -64,6 +66,7 @@
 
             streamchart.graph = new Streamgraph(contents, "streamgraph1");
             streamchart.palette = globalPalette.paletteSample(streamchart.graph.getCategories().length);
+            streamchart.affectation = new AffectationScore(streamchart.graph, method.impMaxInverse, streamchart.palette);
 
             streamchart.graph.draw(streamchart.palette.colors);
             streamchart.palette.draw("color-graph", streamchart.graph.getCategories());
@@ -71,18 +74,16 @@
           reader.readAsText(file);
         }
 
-        document.getElementById('file-input')
-          .addEventListener('change', readSingleFile, false);
+        document.getElementById('file-input').addEventListener('change', readSingleFile, false);
         //------------------------------------------------------
-
-
 
         streamchart.graph.draw(streamchart.palette.colors, "streamgraph1");
         streamchart.palette.draw("color-graph", streamchart.graph.getCategories());
+        streamchart.palette.draw("color-bitmap");
 
         window.readData = () => {
-            let path = document.getElementById("data").value;
-            console.log(path);
+          let path = document.getElementById("data").value;
+          console.log(path);
         }
     </script>
 </body>

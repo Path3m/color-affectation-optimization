@@ -28,6 +28,11 @@ div {
     margin-left: 15%;
 }
 
+.square-container{
+  margin-top: 0.5%;
+  margin-left: 10%;
+}
+
 /* Navigation bar style ------------------------------------------ */
 /* Add a black background color to the top navigation */
 .topnav {
