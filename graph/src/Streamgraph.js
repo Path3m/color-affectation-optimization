@@ -167,7 +167,7 @@ export class Streamgraph {
      * @returns a map containing the table of elementary importance between two categories
      */
     computeElementaryImportance(func){
-      let keys = util.getKeys(this.data[0]).slice(1);
+      let keys = this.getCategories();
       let hauteur = this.data;
 
       /* soit |keys| le nombre de catégories on a donc : 
@@ -213,7 +213,7 @@ export class Streamgraph {
     computeGlobalImportance(funcGlobal, funcElem){
       let elementaire = this.computeElementaryImportance(funcElem);
 
-      let keys = util.getKeys(this.data[0]).slice(1);
+      let keys = this.getCategories();
       let importance = util.nullMatrix(keys.length, keys.length, Float32Array);
 
       for(let categorie=0; categorie<keys.length; categorie++){
@@ -235,7 +235,7 @@ export class Streamgraph {
 
       //TODO : use library to determine which representation is in used and compute the matrix accordingly
 
-      var keys = util.getKeys(this.data[0]).slice(1);
+      var keys = this.getCategories();
       var hauteur = this.data;
       var importance = util.nullMatrix(keys.length, keys.length, Float32Array);
 
@@ -248,10 +248,10 @@ export class Streamgraph {
           //besoin de de contratste ssi la hauteur des deux catégories n'est pas nulle, et les catégories sont différentes
 
           if      (categorie == voisin || hauteur[t][keys[voisin]] == 0){ voisin++;    }
-          else if (hauteur[t][keys[categorieorie]] == 0)                    { categorie++; }
+          else if (hauteur[t][keys[categorie]] == 0)                    { categorie++; }
 
           else{ //sinon, il y a besoin de contraste entre les catégories
-            var importancePrecedente = importance[categorieorie][voisin];
+            var importancePrecedente = importance[categorie][voisin];
             var hauteurCategorie     = hauteur[t][keys[categorie]];
             var hauteurVoisin        = hauteur[t][keys[voisin]];
 

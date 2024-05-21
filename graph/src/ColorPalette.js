@@ -92,7 +92,9 @@ export class ColorPalette{
      * @return a reference to the color palette
      */
     shuffle(){
-        util.inplaceShuffle(this.colors);
+        this.colors.sort((a,b) => 0.5 - Math.random())
+            .reverse()
+            .sort((a,b) => 0.5 - Math.random());
         return this;
     }
 
