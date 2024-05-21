@@ -86,7 +86,7 @@ export class AffectationScore{
      * @returns a string that contains all the information of the svg
      */
     generateSVG(permutation, size){
-        let margin = 100; 
+        let margin = 200; 
         let svg = '<svg width="'+(size+margin)+'" height="'+(size+margin)+'" version="1.1" xmlns="http://www.w3.org/2000/svg">';
 
         let rangeImp  = util.matrixRangeValue(this.importance.global);
@@ -97,16 +97,19 @@ export class AffectationScore{
 
         let x = 0; let y = 0;
 
-        for(let i=0; i<permutation.length; i++){
+        for(let i=0; i<permutation.length-1; i++){
             y = i*sizeRange + sizeRange / 2 + margin;
+            let color1 = permutation[i]; 
 
-            for(let j=i; j<permutation.length; j++){
+            for(let j=i+1; j<permutation.length; j++){
                 x = j*sizeRange + sizeRange / 2;
-
-                if(i==0) svg += '<text x="'+x+'" y="95" transform="rotate(-90, '+x+', 95)" fill="black">'+this.categorieMap[j]+'</text>';
-
-                let color1 = permutation[i]; 
                 let color2 = permutation[j];
+
+                if(i==0) {
+                    svg += '<text x="'+x+'" y="'+(margin-sizeRange)+'" transform="rotate(-90, '+x+', '+(margin-sizeRange)+')" fill="black">'+this.categorieMap[j]+'</text>';
+                    svg += '<rect width="'+sizeRange+'" height="'+sizeRange+'" x="'+(x-sizeRange/2)+'" y="'+(margin-sizeRange)+'"'
+                            +'style="fill:'+this.colorMap[color2]+';stroke-width:3;stroke:white" />';
+                }
 
                 let radiusDist = util.interpolate(this.distance[color1][color2], rangeDist, radiusRange);
                 let radiusImp = util.interpolate(this.importance.global[i][j], rangeImp, radiusRange);
@@ -115,13 +118,13 @@ export class AffectationScore{
                 svg +=  '\n<circle cx="'+x+'" cy="'+y+'" r="'+radiusDist+'" fill="green" fill-opacity="0.5"/>\n';
             }
 
+            console.log(this.colorMap[color1]); 
+
             svg += '<text x="'+(size+sizeRange)+'" y="'+y+'" fill="black">'+this.categorieMap[i]+'</text>';
+            svg += '<rect width="'+sizeRange+'" height="'+sizeRange+'" x="'+size+'" y="'+(y-sizeRange/2)+'"'
+                    +'style="fill:'+this.colorMap[color1]+';stroke-width:3;stroke:white" />';
         }
 
-        svg += "\n</svg>\n";
-
-        console.log(svg);
-
-        return svg;
+        return svg+"\n</svg>\n";
     }
 }
