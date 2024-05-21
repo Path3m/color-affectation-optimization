@@ -104,25 +104,28 @@ export class ColorPalette{
     draw(container, categories){
         let size = util.closestProduct(this.colors.length);
         let line = size[0]; let column = size[1];
+        let sizeRange = 100;
 
-        let data = new Array(line * column);
+        let svg = '<svg width="'+(column*sizeRange)+'" height="'+(line*sizeRange)+'" version="1.1" xmlns="http://www.w3.org/2000/svg">\n';
 
-        for(let i=0;i<line;i++){ 
-            for(let j=0;j<column;j++){
-                let k = i*column+j;
-                let categorie = 
-                    (categories == undefined || categories[k] == undefined) ? 
-                    k : categories[k];
-                data[k] = {x:""+j, y:""+i, heat:""+k, custom_field:  categorie, fill: this.colors[k]};
+        for(let i=0; i<line; i++){
+            let y = (0.5+i)*sizeRange;
+
+            for(let j=0; j<column; j++){
+                let x = (0.5+j)*sizeRange;
+                let k = i * column + j;
+                let cat = (categories == undefined || categories[k] == undefined) ?
+                    k.toString()  :   categories[k];
+
+                let sizeText = (cat.length < 9) ? 16 : 1.75 * sizeRange / cat.length;
+
+                svg += '<rect width="'+sizeRange+'" height="'+sizeRange+'" x="'+(x-sizeRange/2)+'" y="'+(y-sizeRange/2)+'"'
+                    +'style="fill:'+this.colors[k]+';stroke-width:3;stroke:white" />\n';
+                svg += '<text x="'+(x-15*sizeRange/31)+'" y="'+y+'" fill="black" font-size="'+sizeText+'px">'+cat+'</text>\n';
             }
         }
-
-        let heatmap = anychart.heatMap(data)
-            .container(container)
-            .title(container);
-
-        heatmap.tooltip().format("{%custom_field}");
-        heatmap.draw();
+        
+        document.getElementById(container).innerHTML = svg+"</svg>\n";
     }
 
     /**
@@ -142,7 +145,7 @@ export class ColorPalette{
      * Compute the color distance matrix according to the ciede2000 formula
      * on a given color range
      * @param {*} rangeOfColor 
-     * @returns 
+     * @returns a matrix of number where i, j is the color distance between color i and color j 
      */
     computeDistanceMatrix(){
         let distance = util.nullMatrix(this.colors.length, this.colors.length, Float32Array);
