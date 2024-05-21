@@ -1,5 +1,6 @@
 import { ColorPalette } from "./ColorPalette.js";
 import { Streamgraph } from "./Streamgraph.js";
+import * as util from "./utilitaire.js";
 
 export class AffectationScore{
     constructor(graph, method, colorPalette){
@@ -42,11 +43,12 @@ export class AffectationScore{
     }
 
     /**
-     * Given a permutation, affect the color to each categories
+     * Given a permutation, get the corresponding set of color
+     * from the color map.
      * @param {Array} permutation 
      * @returns the array of new colors
      */
-    affectTo(permutation){
+    getColor(permutation){
         let newcolors = new Array(permutation.length);
 
         for(let i=0; i<permutation.length; i++){
@@ -61,6 +63,23 @@ export class AffectationScore{
     }
 
     /**
+     * Given a set of color, return the corresponding permutation 
+     * @param {*} colorSet 
+     * @returns 
+     */
+    getPermutation(colorSet){
+        let permutation = new Array(colorSet.length);
+
+        for(let i=0; i<colorSet.length; i++){
+            let index = 0;
+            while(index < colorSet.length && this.colorMap[index] != colorSet[i]) index++;
+            permutation[i] = index;
+        }
+
+        return permutation;
+    }
+
+    /**
      * Generate the svg representation of the corellogram used to check
      * result between importance and color distance
      * @param {*} permutation 
@@ -70,28 +89,11 @@ export class AffectationScore{
         let margin = 100; 
         let svg = '<svg width="'+(size+margin)+'" height="'+(size+margin)+'" version="1.1" xmlns="http://www.w3.org/2000/svg">';
 
-        let rangeImp = [
-            this.importance.global.reduce((acc, curr) => { return Math.max(acc, Math.max(...curr)); }, this.importance.global[0][0]),
-            this.importance.global.reduce((acc, curr) => { return Math.min(acc, Math.min(...curr)); }, this.importance.global[0][0])
-        ];
-
-        let rangeDist = [
-            this.distance.reduce((acc, curr) => { return Math.max(acc, Math.max(...curr)); }, this.distance[0][0]),
-            this.distance.reduce((acc, curr) => { return Math.min(acc, Math.min(...curr)); }, this.distance[0][0])
-        ];
+        let rangeImp  = util.matrixRangeValue(this.importance.global);
+        let rangeDist = util.matrixRangeValue(this.distance);
 
         let sizeRange = size / permutation.length;
         let radiusRange = [0, sizeRange/2];
-
-        let interpolate = (number, range1, range2) => {
-            let y1 = Math.min(...range2); let y2 = Math.max(...range2);
-            let x1 = Math.min(...range1); let x2 = Math.max(...range1);
-
-            let a = (y2-y1)/(x2-x1);
-            let b = y1-a*x1;
-
-            return number * a + b;
-        };
 
         let x = 0; let y = 0;
 
@@ -106,8 +108,8 @@ export class AffectationScore{
                 let color1 = permutation[i]; 
                 let color2 = permutation[j];
 
-                let radiusDist = interpolate(this.distance[color1][color2], rangeDist, radiusRange);
-                let radiusImp = interpolate(this.importance.global[i][j], rangeImp, radiusRange);
+                let radiusDist = util.interpolate(this.distance[color1][color2], rangeDist, radiusRange);
+                let radiusImp = util.interpolate(this.importance.global[i][j], rangeImp, radiusRange);
 
                 svg +=  '\n<circle cx="'+x+'" cy="'+y+'" r="'+radiusImp+'" fill="orange"/>\n';
                 svg +=  '\n<circle cx="'+x+'" cy="'+y+'" r="'+radiusDist+'" fill="green" fill-opacity="0.5"/>\n';
