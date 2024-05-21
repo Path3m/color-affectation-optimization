@@ -87,7 +87,7 @@ export class Affectation{
     /**
      * Given a set of color, return the corresponding permutation 
      * @param {*} colorSet 
-     * @returns 
+     * @returns a permutation
      */
     getPermutation(colorSet){
         let permutation = new Array(colorSet.length);
@@ -104,7 +104,7 @@ export class Affectation{
     /**
      * Generate the svg representation of the corellogram used to check
      * result between importance and color distance
-     * @param {*} permutation 
+     * @param {Array} permutation corresponding to an affectation of colors on the categories
      * @returns a string that contains all the information of the svg
      */
     generateSVG(permutation, size){

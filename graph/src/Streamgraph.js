@@ -3,9 +3,9 @@ import * as util from "./utilitaire.js";
 export class Streamgraph {
 
     /**
-     * 
-     * @param {string} divID 
-     * @param {string | any} data 
+     * Build a streamchart/streamgraph according to a set of data
+     * @param {string | any} data a csv file or a csv string containing the data to use, where the first column is the x values, and the first line the categories
+     * @param {string | undefined } divID optional : a div in which the graph will be drawn
      */
     constructor(data, divID){
         // set the dimensions and margins of the graph
@@ -26,9 +26,10 @@ export class Streamgraph {
         }
     }
 
+    //--------------------------------------------------------------------------------------------------------------
     /**
-     * 
-     * @returns the streamchart categories
+     * Select in the data the set of categories of the graph
+     * @returns an array containing the categories
      */
     getCategories(){
       return this.data.columns.slice(1);
@@ -47,7 +48,7 @@ export class Streamgraph {
       return {name: name, values: values};
     }
 
-    //-------------------------------------------------------------------
+    //--------------------------------------------------------------------------------------------------------------
     /**
      * Initialize the string containing an svg object informations
      * @param {*} divID the div in the html page
@@ -65,7 +66,7 @@ export class Streamgraph {
               "translate(" + this.margin.left + "," + this.margin.top + ")");
     }
 
-    //-------------------------------------------------------------------
+    //--------------------------------------------------------------------------------------------------------------
     /**
      * Create the x axis to append to an svg object 
      * @param {*} scaleX 
@@ -89,7 +90,7 @@ export class Streamgraph {
         return x;
     }
 
-    //-------------------------------------------------------------------
+    //--------------------------------------------------------------------------------------------------------------
     /**
      * Create the y axis to append to the svg object
      * @param {*} categories 
@@ -115,10 +116,11 @@ export class Streamgraph {
       return y;
     }
 
-    //-------------------------------------------------------------------
+    //--------------------------------------------------------------------------------------------------------------
     /**
      * Draw the graph according to its data and a given set of color
-     * @param {*} colors
+     * @param {Array} colors
+     * @param {string | undefined} divID the id of the container in which the graph will be drawn : if undefined, the 'this' divId will be used
      */
     draw(colors, divID) {
       if(divID != undefined){
@@ -157,7 +159,7 @@ export class Streamgraph {
           .attr("d", area);
     }
 
-    //-----------------------------------------------------
+    //--------------------------------------------------------------------------------------------------------------
     /**
      * Compute and store for each pair of categories the elementary importance
      * at each instant of the streamgraph
@@ -200,6 +202,7 @@ export class Streamgraph {
       return impElem;
     }
 
+    //--------------------------------------------------------------------------------------------------------------
     /**
      * Given the d3 representation of a streamgraph, and the elementary 
      * importance, compute the matrix of global importance
@@ -222,7 +225,7 @@ export class Streamgraph {
       return {elementaire: elementaire, global:importance};
     }
 
-    //---------------------------------------------------------------
+    //--------------------------------------------------------------------------------------------------------------
     /**
      * GIVEN THE D3 REPRESNETATION OF A STEAMGRAPH
      *  - compute the importance matrix of the streamgraph
@@ -264,6 +267,7 @@ export class Streamgraph {
       return importance;
     }
 
+    //--------------------------------------------------------------------------------------------------------------
     /**
      * Compute matrix importance according to the given method
      * @param {ImportanceMethod} method 

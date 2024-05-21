@@ -182,10 +182,10 @@ export function matrixRangeValue(matrix){
 
 /**
  * Linear interpolation of a number between two range
- * @param {*} number 
- * @param {*} range1 the given number belongs to range1
- * @param {*} range2 the returned number belongs to range2
- * @returns 
+ * @param {number} number 
+ * @param {Array} range1 the given number belongs to range1
+ * @param {Array} range2 the returned number belongs to range2
+ * @returns number in range2
  */
 export function interpolate(number, range1, range2){
     let y1 = Math.min(...range2); let y2 = Math.max(...range2);

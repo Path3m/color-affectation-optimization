@@ -97,9 +97,9 @@ export class ColorPalette{
     }
 
     /**
-     * Draw the color palette using anychart heatmaps features
-     * @param {*} title 
-     * @param {*} container 
+     * Draw the color palette by creating a svg and append it to the document
+     * @param {string} container the div in which the palette will be drawn
+     * @param {Array | undefined} categories the categories corresponding to the color if given
      */
     draw(container, categories){
         let size = util.closestProduct(this.colors.length);
@@ -143,8 +143,7 @@ export class ColorPalette{
 
     /**
      * Compute the color distance matrix according to the ciede2000 formula
-     * on a given color range
-     * @param {*} rangeOfColor 
+     * on the palette color range
      * @returns a matrix of number where i, j is the color distance between color i and color j 
      */
     computeDistanceMatrix(){
