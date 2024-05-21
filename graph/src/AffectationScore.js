@@ -2,7 +2,7 @@ import { ColorPalette } from "./ColorPalette.js";
 import { Streamgraph } from "./Streamgraph.js";
 import * as util from "./utilitaire.js";
 
-export class AffectationScore{
+export class Affectation{
     constructor(graph, method, colorPalette){
         this.importance = graph.importance(method);
         this.distance   = colorPalette.computeDistanceMatrix();

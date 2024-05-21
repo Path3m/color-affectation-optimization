@@ -43,14 +43,13 @@
     <button id="reset" onclick="resetColor('streamgraph1', 'color-graph')">Reset Color</button>
 
     <div class="palette-container" id="color-graph"></div>
-    <div class="palette-container" id="color-bitmap"></div>
     
 
     <script type="module">
         import * as obj from "./data/build.js";
         import {Streamgraph} from "./graph/src/Streamgraph.js";
         import {ColorPalette} from "./graph/src/ColorPalette.js";
-        import {AffectationScore} from "./graph/src/AffectationScore.js";
+        import {Affectation} from "./graph/src/AffectationScore.js";
         import * as method from "./graph/src/computationMethod.js";
 
         //------------------------------------------------------
@@ -66,7 +65,7 @@
 
             streamchart.graph = new Streamgraph(contents, "streamgraph1");
             streamchart.palette = globalPalette.paletteSample(streamchart.graph.getCategories().length);
-            streamchart.affectation = new AffectationScore(streamchart.graph, method.impMaxInverse, streamchart.palette);
+            streamchart.affectation = new Affectation(streamchart.graph, method.impMaxInverse, streamchart.palette);
 
             streamchart.graph.draw(streamchart.palette.colors);
             streamchart.palette.draw("color-graph", streamchart.graph.getCategories());
@@ -79,7 +78,6 @@
 
         streamchart.graph.draw(streamchart.palette.colors, "streamgraph1");
         streamchart.palette.draw("color-graph", streamchart.graph.getCategories());
-        streamchart.palette.draw("color-bitmap");
 
         window.readData = () => {
           let path = document.getElementById("data").value;

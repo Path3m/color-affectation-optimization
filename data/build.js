@@ -10,7 +10,7 @@ import { HeatMap } from "../stat/HeatMap.js";
 import { OptigenBoxPlot } from "../stat/BoxPlot.js";
 
 import * as dataset from "./dataset.js";
-import { AffectationScore } from "../graph/src/AffectationScore.js";
+import { Affectation } from "../graph/src/AffectationScore.js";
 
 
 //INITIATING GLOBAL PALETTE ----------------------------------------------------
@@ -87,7 +87,7 @@ window.currentSG = 0;
 
 export const defaultStreamgraph = new Streamgraph(dataStreamgraph[currentSG]);
 export const defaultPalette = globalPalette.paletteSample(defaultStreamgraph.getCategories().length);
-export const defaultAffect = new AffectationScore(defaultStreamgraph, method.impMaxInverse, defaultPalette);
+export const defaultAffect = new Affectation(defaultStreamgraph, method.impMaxInverse, defaultPalette);
 
 window.streamchart = {
     graph: defaultStreamgraph,
@@ -104,7 +104,7 @@ window.setStreamChart = (num, divID) => {
     currentSG = num%dataStreamgraph.length;
     let graph = new Streamgraph(dataStreamgraph[currentSG]);
     let palette = globalPalette.paletteSample(graph.getCategories().length);
-    let affectation = new AffectationScore(graph, method.impMaxInverse, palette);
+    let affectation = new Affectation(graph, method.impMaxInverse, palette);
     streamchart = { graph : graph, palette : palette, affectation : affectation };
     
     console.log(streamchart);
