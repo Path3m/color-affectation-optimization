@@ -147,6 +147,10 @@ export class Affectation{
                     +'style="fill:'+this.colorMap[color1]+';stroke-width:3;stroke:white" />\n';
         }
 
-        return svg+"\n</svg>\n";
+        let score_stat = "Score permutation : \n"+this.score(permutation).toString(6)+"\n"
+
+        return svg
+            +'<text x="'+(0.10*size)+'" y="'+(0.70*size+margin)+'" fill="black">'+score_stat+'</text>\n'
+            +'</svg>\n';
     }
 }
