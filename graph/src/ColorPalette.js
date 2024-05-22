@@ -119,11 +119,12 @@ export class ColorPalette{
                 let cat = (categories == undefined || categories[k] == undefined) ?
                     k.toString()  :   categories[k];
 
-                let sizeText = (cat.length < 9) ? 16 : 1.75 * sizeRange / cat.length;
+                let sizeText = (cat.length < 11) ? 16 : 1.75 * sizeRange / cat.length;
+                let fontColor = (culori.converter('lab')(this.colors[k]).l < 30) ? "white" : "black";
 
                 svg += '<rect width="'+sizeRange+'" height="'+sizeRange+'" x="'+(x-sizeRange/2)+'" y="'+(y-sizeRange/2)+'"'
                     +'style="fill:'+this.colors[k]+';stroke-width:3;stroke:white" />\n';
-                svg += '<text x="'+(x-15*sizeRange/31)+'" y="'+y+'" fill="black" font-size="'+sizeText+'px">'+cat+'</text>\n';
+                svg += '<text x="'+(x-9*sizeRange/20)+'" y="'+y+'" fill="'+fontColor+'" font-size="'+sizeText+'px">'+cat+'</text>\n';
             }
         }
         
