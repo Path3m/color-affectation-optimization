@@ -13,9 +13,6 @@ export class Affectation{
             this.colorMap[i]     = colorPalette.colors[i];
             this.categorieMap[i] = categories[i];
         }
-
-        console.log(this.categorieMap);
-        console.log(this.colorMap);
     }
 
     /**
@@ -79,7 +76,6 @@ export class Affectation{
 
             newcolors[catInd] = this.colorMap[colorInd];
         }
-        console.log(newcolors);
 
         return newcolors;
     }
@@ -140,14 +136,12 @@ export class Affectation{
                 svg +=  '<circle cx="'+x+'" cy="'+y+'" r="'+radiusDist+'" fill="green" fill-opacity="0.5"/>\n';
             }
 
-            console.log(this.colorMap[color1]); 
-
             svg += '<text x="'+(size+sizeRange)+'" y="'+y+'" fill="black">'+this.categorieMap[i]+'</text>\n';
             svg += '<rect width="'+sizeRange+'" height="'+sizeRange+'" x="'+size+'" y="'+(y-sizeRange/2)+'"'
                     +'style="fill:'+this.colorMap[color1]+';stroke-width:3;stroke:white" />\n';
         }
 
-        let score_stat = "Score permutation : \n"+this.score(permutation).toString(6)+"\n"
+        let score_stat = "Score permutation : \n"+this.score(permutation).toFixed(3)+"\n";
 
         return svg
             +'<text x="'+(0.10*size)+'" y="'+(0.70*size+margin)+'" fill="black">'+score_stat+'</text>\n'
