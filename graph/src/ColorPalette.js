@@ -35,7 +35,7 @@ export class ColorPalette{
      * @returns 
      */
     changeColor(colorInterpol){
-        let tmpPalette = ColorPalette.buildPalette(this.colors.length, {min:0.1, max:0.9}, colorInterpol);
+        let tmpPalette = ColorPalette.buildPalette(this.colors.length, {min:0.3, max:0.7}, colorInterpol);
         this.colors = tmpPalette.colors;
         this.builder = colorInterpol;
         return this;
@@ -47,7 +47,7 @@ export class ColorPalette{
      * @returns a ColorPalette of a hundred colors
      */
     static largeGraphPalette(colorInterpol){
-        return this.buildPalette(100, {min:0.1, max:0.9}, colorInterpol);
+        return this.buildPalette(100, {min:0.2, max:0.8}, colorInterpol);
     }
 
     /**
