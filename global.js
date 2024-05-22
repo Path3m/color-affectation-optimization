@@ -15,9 +15,9 @@ import { Affectation } from "./graph/src/Affectation.js";
 
 //CHANGE COLOR PALETTE ------------------------------------------------------
 const allInterpol = [
-    d3.interpolateMagma,
-    d3.interpolateCool,
     d3.interpolateViridis,
+    d3.interpolateCool,
+    d3.interpolateMagma,
     d3.interpolateSpectral,
     d3.interpolateRainbow,
     d3.interpolateSinebow,
@@ -26,7 +26,7 @@ const allInterpol = [
     d3.interpolateRdBu
 ];
 
-let count = Math.floor(Math.random() * allInterpol.length);
+let count = 0;
 
 // GLOBAL PALETTE ----------------------------------------------------
 window.globalPalette = ColorPalette.largeGraphPalette(allInterpol[count]);
@@ -74,33 +74,10 @@ window.changeGlobalPalette = (inc, divID) => {
         (count+inc)%allInterpol.length;
 
     let interpol = allInterpol[count];
-
-    console.log(count);
-    console.log(interpol);
-
     globalPalette.changeColor(interpol);
 
     if(divID !== undefined){
         renewElement(divID);
         globalPalette.draw(divID);
     }
-}
-
-/**
- * Change palette of current graph
- * @param {*} divPalette 
- */
-window.changeGraphPalette = (inc, divPalette) => {
-    changeGlobalPalette(inc);
-    let categories = streamchart.graph.getCategories();
-
-    streamchart.palette = globalPalette.paletteSample(categories.length);
-    streamchart.affectation.setPalette(streamchart.palette);
-
-    console.log(streamchart);
-    
-    renewElement(divPalette);
-
-    streamchart.graph.draw(streamchart.palette.colors);
-    streamchart.palette.draw(divPalette, categories);
 }

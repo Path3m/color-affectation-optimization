@@ -167,3 +167,23 @@ window.resetColor = (divGraph, divPalette) => {
     renewElement("correlogram", "div", "square-container");
     document.getElementById("correlogram").innerHTML = affect.generateSVG(affect.getPermutation(palette.colors), 700);
 }
+
+//---------------------------------------------------------------------------------------------
+/**
+ * Change palette of current graph
+ * @param {*} divPalette the div where the new colors will be displayed
+ */
+window.changeGraphPalette = (inc, divPalette) => {
+    changeGlobalPalette(inc);
+    let categories = streamchart.graph.getCategories();
+
+    streamchart.palette = globalPalette.paletteSample(categories.length);
+    streamchart.affectation.setPalette(streamchart.palette);
+
+    console.log(streamchart);
+    
+    renewElement(divPalette);
+
+    streamchart.graph.draw(streamchart.palette.colors);
+    streamchart.palette.draw(divPalette, categories);
+}
