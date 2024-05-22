@@ -10,35 +10,18 @@ import { HeatMap } from "../stat/HeatMap.js";
 import { OptigenBoxPlot } from "../stat/BoxPlot.js";
 
 import * as dataset from "./data/dataset.js";
-import {globalPalette} from "./data/build.js";
 import { Affectation } from "../graph/src/Affectation.js";
 
-// READ LOCAL FILE --------------------------------------------------------------------
-window.readSingleFile = (e) => {
-    var file = e.target.files[0];
-    if (!file) return;
-    var reader = new FileReader();
-    reader.onload = function(e) {
-      var contents = e.target.result;
+import * as obj from "./global.js";
 
-      renewElement("streamgraph1");
-      renewElement("color-graph");
-
-      streamchart.graph = new Streamgraph(contents, "streamgraph1");
-      streamchart.palette = globalPalette.paletteSample(streamchart.graph.getCategories().length);
-      streamchart.affectation = new Affectation(streamchart.graph, method.impMaxInverse, streamchart.palette);
-
-      streamchart.graph.draw(streamchart.palette.colors);
-      streamchart.palette.draw("color-graph", streamchart.graph.getCategories());
-    };
-    reader.readAsText(file);
-}
-
-//Add event to button
-document.getElementById('file-input').addEventListener('change', readSingleFile, false);
+// ---------------------------------------------------------------------------------------------
+// HTML DIV ID ---------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------
 
 
+// ---------------------------------------------------------------------------------------------
 // CHANGE THE GRAPH TO DISPLAY -----------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------
 let dataStreamgraph = [
     dataset.dmFilterAlternative,
     dataset.usaNames,
@@ -47,11 +30,12 @@ let dataStreamgraph = [
     dataset.binary,
     dataset.truc    
 ];
+
 window.currentSG = 0;
 
-export const defaultStreamgraph = new Streamgraph(dataStreamgraph[currentSG]);
-export const defaultPalette = globalPalette.paletteSample(defaultStreamgraph.getCategories().length);
-export const defaultAffect = new Affectation(defaultStreamgraph, method.impMaxInverse, defaultPalette);
+const defaultStreamgraph = new Streamgraph(dataStreamgraph[currentSG]);
+const defaultPalette = globalPalette.paletteSample(defaultStreamgraph.getCategories().length);
+const defaultAffect = new Affectation(defaultStreamgraph, method.impMaxInverse, defaultPalette);
 
 window.streamchart = {
     graph: defaultStreamgraph,
@@ -59,6 +43,7 @@ window.streamchart = {
     affectation: defaultAffect
 };
 
+//----------------------------------------------------------------------------------------------
 /**
  * Set the current streamgraph on data with given number
  * @param {*} num 
@@ -78,7 +63,31 @@ window.setStreamChart = (num, divGraph, divPalette) => {
     streamchart.palette.draw(divPalette, streamchart.graph.getCategories());
 }
 
-// CHANGE THE COLOR OF THE GRAPH TO DISPLAY ------------------------------------------------------
+// READ LOCAL FILE --------------------------------------------------------------------
+window.readSingleFile = (path) => {
+    var file = path.target.files[0];
+    if (!file) return;
+
+    var reader = new FileReader();
+    reader.onload = function(path) {
+      var contents = path.target.result;
+
+      renewElement("streamgraph1");
+      renewElement("color-graph");
+
+      streamchart.graph = new Streamgraph(contents, "streamgraph1");
+      streamchart.palette = globalPalette.paletteSample(streamchart.graph.getCategories().length);
+      streamchart.affectation = new Affectation(streamchart.graph, method.impMaxInverse, streamchart.palette);
+
+      streamchart.graph.draw(streamchart.palette.colors);
+      streamchart.palette.draw("color-graph", streamchart.graph.getCategories());
+    };
+    reader.readAsText(file);
+}
+
+// CHANGE THE AFFECTATION OF COLOR  --------------------------------------------------------------
+//------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------
 /**
  * 
  * @param {*} graph 
@@ -111,10 +120,9 @@ window.optimizeColor = (divGraph, divPalette) => {
     document.getElementById("correlogram").innerHTML = affect.generateSVG(best.genome, 700);
 }
 
+//---------------------------------------------------------------------------------------------
 /**
- * 
- * @param {*} graph 
- * @param {*} palette 
+ * Randomly affect the palette color to the graph categories
  * @param {*} divGraph 
  * @param {*} divPalette 
  */
@@ -139,7 +147,9 @@ window.randomColor = (divGraph, divPalette) => {
     document.getElementById("correlogram").innerHTML = affect.generateSVG(permutation, 700);
 }
 
+//---------------------------------------------------------------------------------------------
 /**
+ * Bitmap affectation of the palette's color to the graph categories
  * @param {*} divGraph 
  * @param {*} divPalette 
  */

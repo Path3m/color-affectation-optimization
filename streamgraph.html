@@ -17,6 +17,9 @@
 
     <!-- to use box plot -->
     <script src="https://cdn.plot.ly/plotly-2.32.0.min.js" charset="utf-8"></script>
+
+    <script type="module" src="streamgraph.js"></script>
+    <script type="module" src="global.js"></script>
 </head>
 
 <body>
@@ -40,44 +43,25 @@
     <button id="button-optimize" onclick="optimizeColor('streamgraph1', 'color-graph')">Optimize Color</button>
     <button id="button-random" onclick="randomColor('streamgraph1', 'color-graph')">Random Color</button>
     <button id="button-reset" onclick="resetColor('streamgraph1', 'color-graph')">Reset Color</button>
-    <button id="button-change" onclick="changeGraphPalette('color-graph')">Change Palette</button>
+    <button id="button-next-palette" onclick="changeGraphPalette(1, 'color-graph')">Next Palette</button>
+    <button id="button-previous-palette" onclick="changeGraphPalette(-1, 'color-graph')">Previous Palette</button>
 
     <div class="palette-container" id="color-graph"></div>
     
 
     <script type="module">
-        import * as obj from "./data/build.js";
+        import * as g from "./global.js";
+        import * as s from "./streamgraph.js";
         import {Streamgraph} from "./graph/src/Streamgraph.js";
         import {ColorPalette} from "./graph/src/ColorPalette.js";
         import {Affectation} from "./graph/src/Affectation.js";
         import * as method from "./graph/src/computationMethod.js";
-
-        //------------------------------------------------------
-        function readSingleFile(e) {
-          var file = e.target.files[0];
-          if (!file) return;
-          var reader = new FileReader();
-          reader.onload = function(e) {
-            var contents = e.target.result;
-
-            renewElement("streamgraph1");
-            renewElement("color-graph");
-
-            streamchart.graph = new Streamgraph(contents, "streamgraph1");
-            streamchart.palette = globalPalette.paletteSample(streamchart.graph.getCategories().length);
-            streamchart.affectation = new Affectation(streamchart.graph, method.impMaxInverse, streamchart.palette);
-
-            streamchart.graph.draw(streamchart.palette.colors);
-            streamchart.palette.draw("color-graph", streamchart.graph.getCategories());
-          };
-          reader.readAsText(file);
-        }
-
-        document.getElementById('file-input').addEventListener('change', readSingleFile, false);
         //------------------------------------------------------
 
         streamchart.graph.draw(streamchart.palette.colors, "streamgraph1");
         streamchart.palette.draw("color-graph", streamchart.graph.getCategories());
+
+        document.getElementById('file-input').addEventListener('change', readSingleFile, false);
     </script>
 </body>
 

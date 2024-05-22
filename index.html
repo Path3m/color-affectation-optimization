@@ -20,11 +20,9 @@
     
     <!-- to change the color of the palette -->
     <script type="module">
-        import * as obj from "./data/build.js";
-
+        import * as b from "./global.js";
         globalPalette.draw("color-palette");
     </script>
-
 </head>
 
 <body>
@@ -36,7 +34,8 @@
 
     <div>
         Main color palette used throughout the color representation.
-        <button id="myButton" onclick="changeGlobalPalette('color-palette')">Change Color</button>
+        <button id="button-next-palette" onclick="changeGlobalPalette(1, 'color-palette')">Next Palette</button>
+        <button id="button-previous-palette" onclick="changeGlobalPalette(-1, 'color-palette')">Previous Palette</button>
         <div class="heatmap-container" id="color-palette"></div>
     </div>
     
