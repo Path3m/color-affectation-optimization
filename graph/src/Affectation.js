@@ -143,8 +143,16 @@ export class Affectation{
 
         let score_stat = "Score permutation : \n"+this.score(permutation).toFixed(3)+"\n";
 
+        let legend = (
+            '<rect width="'+sizeRange+'" height="'+sizeRange+'" x="'+(0.05*size)+'" y="'+(0.625*size+margin)+'" fill="orange" />\n'
+            +'<text x="'+(0.06*size+sizeRange)+'" y="'+(0.65*size+margin)+'" fill="black">Importance de contraste</text>\n'
+            +'<rect width="'+sizeRange+'" height="'+sizeRange+'" x="'+(0.05*size)+'" y="'+(0.63*size+margin+sizeRange)+'" fill="green" />\n'
+            +'<text x="'+(0.06*size+sizeRange)+'" y="'+(0.66*size+margin+sizeRange)+'" fill="black">Distance entre couleur</text>\n'
+        );
+
         return svg
-            +'<text x="'+(0.10*size)+'" y="'+(0.70*size+margin)+'" fill="black">'+score_stat+'</text>\n'
+            +'<text x="'+(0.05*size)+'" y="'+(0.67*size+margin+2*sizeRange)+'" fill="black">'+score_stat+'</text>\n'
+            + legend
             +'</svg>\n';
     }
 }
