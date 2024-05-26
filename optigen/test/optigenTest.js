@@ -29,8 +29,8 @@ const score = bestScoreIfEvenFirst;
 console.clear();
 console.log("on commence ici *************************************************\n");
 
-let dimensions = {limit: 20, generation: 100, individual: 10};
-let factors    = {reproduction: 0.6, mutation: 0.4, selection: 0.4};
+let dimensions = {limit: 30, generation: 200, individual: 20};
+let factors    = {reproduction: 0.6, mutation: 0.5, selection: 0.5};
 
 let optigen = new Optigen(score, dimensions, factors);
 
@@ -43,7 +43,9 @@ let popfin = result.last;
 console.log("\nPopulation Finale :");
 popfin.poplog();
 
+console.log("Meilleur élément : ", popfin.members[0].genome, " | ", popfin.members[0].score);
+
 let boxplot = new OptigenBoxPlot(result, "optigen");
-boxplot.draw();
+boxplot.draw(dimensions, factors, popfin.members[0]);
 
 console.log("\non termine là ***************************************************");

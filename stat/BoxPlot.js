@@ -3,7 +3,7 @@ import { ColorPalette } from "../graph/src/ColorPalette.js";
 
 export class OptigenBoxPlot{
     /**
-     * Build the data of the box plot and set it ready to be drown
+     * Build the data of the box plot and set it ready to be drawn
      * @param {*} div 
      * @param {*} geneticResult 
      */
@@ -77,11 +77,25 @@ export class OptigenBoxPlot{
     /**
      * Draw the box plot
      */
-    draw(container){
+    draw(dimensions, factors, best, container){
+        this.container = (this.container == undefined) ? container : this.container;
+
         Plotly.newPlot(
-            (this.container == undefined) ? container : this.container, 
+            this.container, 
             this.data, 
             this.layout
         );
+
+        let paramOptigen = (
+            "Nombre maximale de génération : "+dimensions.limit+
+            " ; Taille de la population : "+dimensions.generation+" individus ; "+
+            "Taille d'un individu de la population : "+dimensions.individual+"<br>"+
+            "Pourcentage autorisé à la reproduction : "+(100*factors.reproduction)+"% ; "+
+            "Pourcentage de mutation : "+(100*factors.mutation)+"% ; "+
+            "Pourcentage de selection : "+(100*factors.selection)+"% <br><br>"+
+            "Meilleur individu : "+best.genome.toString()
+        );
+
+        document.getElementById(this.container).innerHTML += paramOptigen;
     }
 }
