@@ -17,10 +17,6 @@
 
     <!-- to use box plot and linechart -->
     <script src="https://cdn.plot.ly/plotly-2.32.0.min.js" charset="utf-8"></script>
-    
-    <!-- to change the color of the palette -->
-    <script type="module">
-    </script>
 
 </head>
 
@@ -32,9 +28,11 @@
     </nav>
 
     <div id="linechart"></div>
+    <div id="optigen" class="boxplot-container"></div>
 
-    <script type="module">
-        import * as obj from "./data/build.js";
+    <script type="module" src="optigen/test/optigenTest.js"></script>
+
+<!--     <script type="module">
         import * as method from "./graph/src/computationMethod.js";
         import {Permutation} from "./optigen/src/Permutation.js";
 
@@ -99,7 +97,7 @@
         };
 
         Plotly.newPlot('linechart', data, layout);
-    </script>
+    </script> -->
 </body>
 
 </html>
