@@ -86,6 +86,8 @@ export class OptigenBoxPlot{
             this.layout
         );
 
+        let meilleur = " [ " + best.genome.reduce((acc, current) => acc + " - "+ current) + " ] ";
+
         let paramOptigen = (
             "Nombre maximale de génération : "+dimensions.limit+
             " ; Taille de la population : "+dimensions.generation+" individus ; "+
@@ -93,7 +95,7 @@ export class OptigenBoxPlot{
             "Pourcentage autorisé à la reproduction : "+(100*factors.reproduction)+"% ; "+
             "Pourcentage de mutation : "+(100*factors.mutation)+"% ; "+
             "Pourcentage de selection : "+(100*factors.selection)+"% <br><br>"+
-            "Meilleur individu : "+best.genome.toString()
+            "Meilleur individu : "+meilleur
         );
 
         document.getElementById(this.container).innerHTML += paramOptigen;

@@ -48,4 +48,7 @@ console.log("Meilleur élément : ", popfin.members[0].genome, " | ", popfin.mem
 let boxplot = new OptigenBoxPlot(result, "optigen");
 boxplot.draw(dimensions, factors, popfin.members[0]);
 
+let meilleur = [18,16,14,12,10,8,6,4,2,0,1,3,5,7,9,11,13,15,17,19];
+console.log("Score maximum : ",meilleur,"|",score(meilleur));
+
 console.log("\non termine là ***************************************************");

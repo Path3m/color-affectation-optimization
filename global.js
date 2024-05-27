@@ -3,7 +3,6 @@ import {Streamgraph} from "./graph/src/Streamgraph.js";
 import * as method from "./graph/src/computationMethod.js";
 
 import { Optigen } from "./optigen/src/Optigen.js";
-import { score } from "./optigen/src/utilitaire.js";
 import { Permutation } from "./optigen/src/Permutation.js";
 
 import { HeatMap } from "./stat/HeatMap.js";

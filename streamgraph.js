@@ -3,7 +3,6 @@ import {Streamgraph} from "../graph/src/Streamgraph.js";
 import * as method from "../graph/src/computationMethod.js";
 
 import { Optigen } from "../optigen/src/Optigen.js";
-import { score } from "../optigen/src/utilitaire.js";
 import { Permutation } from "../optigen/src/Permutation.js";
 
 import { HeatMap } from "../stat/HeatMap.js";
@@ -13,11 +12,6 @@ import * as dataset from "./data/dataset.js";
 import { Affectation } from "../graph/src/Affectation.js";
 
 import * as obj from "./global.js";
-
-// ---------------------------------------------------------------------------------------------
-// HTML DIV ID ---------------------------------------------------------------------------------
-// ---------------------------------------------------------------------------------------------
-
 
 // ---------------------------------------------------------------------------------------------
 // CHANGE THE GRAPH TO DISPLAY -----------------------------------------------------------------
@@ -102,9 +96,12 @@ window.optimizeColor = (divGraph, divPalette) => {
     renewElement(divPalette);
     let categories = graph.getCategories();
 
+    let dimensions = {limit: 50, generation: 200, individual: categories.length};
+    let factors = {reproduction: 0.6, mutation: 0.4, selection: 0.4};
+
     let optigen = new Optigen(
         affect.score.bind(affect),
-        {limit: 50, generation: 200, individual: categories.length}
+        dimensions, factors
     );
     let result = optigen.execute()
     let best = result.last.members[0];
@@ -116,7 +113,7 @@ window.optimizeColor = (divGraph, divPalette) => {
     renewElement("correlogram", "div", "square-container");
     renewElement("optigen-stat", "div", "boxplot-container");
 
-    new OptigenBoxPlot(result).draw("optigen-stat");
+    new OptigenBoxPlot(result).draw(dimensions, factors, best, "optigen-stat");
     document.getElementById("correlogram").innerHTML = affect.generateSVG(best.genome, 700);
 }
 
