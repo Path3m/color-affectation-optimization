@@ -4,7 +4,6 @@ import { Permutation } from "./Permutation.js";
 export class Population{
     constructor(members, func){
         this.members = members;
-        this.length  = members.length;
         this.func    = func;
 
         this.orderedByScore = false;
@@ -17,8 +16,8 @@ export class Population{
      * @returns 
      */
     static randPop(sizePop, sizeInd, func){
-        let members = new Array(sizePop)
-        for(let i=0; i<members.length; members[i++] = new Individual(Permutation.rand(sizeInd), func));
+        let members = new Array(sizePop);
+        for(let i=0; i<sizePop; members[i++] = new Individual(Permutation.rand(sizeInd), func));
         return new Population(members, func);
     }
 
@@ -49,13 +48,13 @@ export class Population{
      * @return a reference to this population
      */
     mutatePop(percentMut){
-        let numberToMutate = Math.floor(this.length * percentMut);
+        let numberToMutate = Math.floor(this.members.length * percentMut);
 
         let alreadyMutated = {};
-        let index = Math.floor(Math.random() * this.length);
+        let index = Math.floor(Math.random() * this.members.length);
 
         for(let i=0; i<numberToMutate; i++){
-            while(index in alreadyMutated) index = Math.floor(Math.random() * this.length);
+            while(index in alreadyMutated) index = Math.floor(Math.random() * this.members.length);
             this.members[index].mutation();
             alreadyMutated[index] = i;
         }
@@ -87,7 +86,7 @@ export class Population{
      */
     newGeneration(crossPercent, sizeNewGen) {
         let evenSize   = (sizeNewGen % 2 == 0)? sizeNewGen : sizeNewGen - 1;
-        let nbParents  = Math.floor(this.length * crossPercent);
+        let nbParents  = Math.floor(this.members.length * crossPercent);
         let newMembers = new Array(sizeNewGen);
     
         for (let i = 0; i < evenSize;) {
@@ -121,7 +120,6 @@ export class Population{
     push(population){
         if(this.func.toString() != population.func.toString()) throw new Error("Can't add two different population.");
         this.members.push(...population.members);
-        this.length += population.length;
         this.orderedByScore = false;
         return this;
     }
