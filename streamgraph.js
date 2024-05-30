@@ -93,6 +93,17 @@ window.optimizeColor = (divGraph, divPalette) => {
     let graph = streamchart.graph;
     let affect = streamchart.affectation;
 
+    //...
+    let csvContent = affect.elementaryToCsv();
+    var encodedUri = encodeURI(csvContent);
+    var link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "my_data.csv");
+    document.body.appendChild(link); // Required for FF
+
+    link.click();
+    //...
+
     renewElement(divPalette);
     let categories = graph.getCategories();
 

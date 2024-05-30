@@ -155,4 +155,34 @@ export class Affectation{
             + legend
             +'</svg>\n';
     }
+
+    elementaryToCsv(){
+        let csvContent = "data:text/csv;charset=utf-8,";
+
+        //récupération des données
+        let matrix = new Array();
+        matrix.push(["instant"]);
+
+        this.importance.elementaire.forEach((value, key, map) => {
+            let line = new Array();
+            line.push(key); line.push(...value);
+            matrix.push(line);
+        });
+
+        for(let i=0; i<matrix[1].length-1; matrix[0].push(i++));
+
+        console.log(matrix);
+
+        //passage des données dans la chaîne csv
+        for(let j=0; j<matrix[0].length; j++){
+            for(let i=0; i<matrix.length-1; i++){    
+                csvContent += matrix[i][j] + ","
+            }
+            csvContent += matrix[matrix.length-1][j] + "\n";
+        }
+
+        console.log(csvContent);
+
+        return csvContent;
+    }
 }
