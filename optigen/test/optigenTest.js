@@ -27,62 +27,59 @@ function bestScoreIfEvenFirst(array){
 
 const score = bestScoreIfEvenFirst;
 
+function evenNumberOnLeft(size){
+    let enol = new Array(size);
+    let middle = Math.ceil(size/2);
+    let rest = size-middle;
+
+    for(let i=0; i<middle; enol[middle-1-i] = 2*i++);
+    for(let i=0; i<rest; enol[i+middle] = (2*i++)+1);
+
+    return enol;
+}
+
 //INITIALISATION --------------------------------------------------------------------------------
 const default_dimensions = {limit: 30, generation: 200, individual: 20};
 const default_factors    = {reproduction: 0.6, mutation: 0.5, selection: 0.5};
 
-let optigen = new Optigen(score, default_dimensions, default_factors);
-
-console.time('a');
-let result = optigen.execute();
-console.timeEnd('a');
-
-let popfin = result.last;
-
-console.log("\nPopulation Finale :");
-popfin.poplog();
-
-console.log("Meilleur élément : ", popfin.members[0].genome, " | ", popfin.members[0].score);
-
-let boxplot = new OptigenBoxPlot(result, default_dimensions, default_factors, "optigen");
-boxplot.draw();
-
-let meilleur = [18,16,14,12,10,8,6,4,2,0,1,3,5,7,9,11,13,15,17,19];
-console.log("Score maximum : ",meilleur,"|",score(meilleur));
-
-//------------------------------------------------------------------------
-
 window.executeOptimisation = () => {
-    var limit = document.getElementById("number-gen").value;
-    var generation = document.getElementById("size-pop").value;
-    var individual = document.getElementById("size-individual").value;
-    var repro = document.getElementById("percent-repro").value;
-    var selec = document.getElementById("percent-selec").value;
-    var mutation = document.getElementById("percent-mut").value;
+    var limit = parseInt(document.getElementById("number-gen").value);
+    var generation = parseInt(document.getElementById("size-pop").value);
+    var individual = parseInt(document.getElementById("size-individual").value);
+    var repro = parseFloat(document.getElementById("percent-repro").value);
+    var selec = parseFloat(document.getElementById("percent-selec").value);
+    var mutation = parseFloat(document.getElementById("percent-mut").value);
 
     let dimensions = {
-        limit: (limit === "") ? default_dimensions.limit : limit,
-        generation: (generation === "") ? default_dimensions.generation : generation,
-        individual: (individual === "") ? default_dimensions.individual : individual
+        limit: (isNaN(limit)) ? default_dimensions.limit : limit,
+        generation: (isNaN(generation)) ? default_dimensions.generation : generation,
+        individual: (isNaN(individual)) ? default_dimensions.individual : individual
     };
 
     let factors = {
-        reproduction: (repro === "") ? default_factors.reproduction : repro,
-        mutation: (mutation === "") ? default_factors.mutation : mutation,
-        selection: (selec=== "") ? default_factors.selection : selec
+        reproduction: (isNaN(repro)) ? default_factors.reproduction : repro,
+        mutation: (isNaN(mutation)) ? default_factors.mutation : mutation,
+        selection: (isNaN(selec)) ? default_factors.selection : selec
     };
 
     console.log(dimensions); console.log(factors);
-    optigen = new Optigen(score, dimensions, factors);
+    let optigen = new Optigen(score, dimensions, factors);
 
     var start = new Date().getTime();
-    result = optigen.execute();
+    let result = optigen.execute();
     var end = new Date().getTime();
-    var duration = start - end;
 
     renewElement("optigen");
-    let boxplot = new OptigenBoxPlot(result, dimensions, factors, "optigen");
-    boxplot.draw();
+    new OptigenBoxPlot(result, dimensions, factors, "optigen").draw();
 
-    document.getElementById("optigen").innerHTML += "Executé en : "+duration+" ms";
+    let bestscore = score(result.last.members[0].genome);
+    let maxscore = score(evenNumberOnLeft(dimensions.individual));
+    document.getElementById("optigen").innerHTML += 
+        "Executé en : "+(end - start)+" ms<br>"+
+        "Score permutation : "+bestscore.toFixed(3)+"<br>"+
+        "Score maximal : "+maxscore.toFixed(3)+"<br>"+
+        "Erreur Absolue : "+(maxscore-bestscore).toFixed(3)+" || Erreur relative : "+(100*(maxscore-bestscore)/bestscore).toFixed(3)+"%"
+    ;
 }
+
+window.executeOptimisation();
