@@ -18,6 +18,8 @@
     <!-- to use box plot and linechart -->
     <script src="https://cdn.plot.ly/plotly-2.32.0.min.js" charset="utf-8"></script>
 
+    <scritp type="module" src="global.js"></scritp>
+
 </head>
 
 <body>
@@ -28,9 +30,25 @@
     </nav>
 
     <div id="linechart"></div>
-    <div id="optigen" class="boxplot-container"></div>
+
+    <div>
+        <input type="number" placeholder="Maximal number of generation" min="1" max="1000" id="number-gen" /><br>
+        <input type="number" placeholder="Size of population per generation" min="1" max="1000" id="size-pop" /><br>
+        <input type="number" placeholder="Size of individuals" min="1" max="200" id="size-individual" /><br>
+        <input type="number" placeholder="Percentage of reproduction" min="0.001" max="1" id="percent-repro" /><br>
+        <input type="number" placeholder="Percentage of selection" min="0.001" max="1" id="percent-selec" /><br>
+        <input type="number" placeholder="Percentage of mutation" min="0.001" max="1" id="percent-mut" /><br>
+
+        <br>
+        <button id="execute" onclick="executeOptimisation()">Execute</button>
+
+        <div id="optigen" class="boxplot-container"></div>
+    </div>
 
     <script type="module" src="optigen/test/optigenTest.js"></script>
+    <script>
+
+    </script>
 
 <!--     <script type="module">
         import * as method from "./graph/src/computationMethod.js";

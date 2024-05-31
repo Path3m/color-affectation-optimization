@@ -7,20 +7,26 @@ export class OptigenBoxPlot{
      * @param {*} div 
      * @param {*} geneticResult 
      */
-    constructor(geneticResult, container){
+    constructor(geneticResult, dimensions, factors, container){
         let palette = ColorPalette.buildPalette(
             20,{min:0.1,max:0.9},
             d3.interpolateViridis
         );
+        let dataOnBuild = this.buildData(geneticResult.statistic, palette.colors);
 
-        let tmp = this.buildData(geneticResult.statistic, palette.colors);
-        let data = tmp.data;
-        let range = tmp.range;
+        let meilleur = " [ " + geneticResult.last.members[0].genome.reduce((acc, current) => acc + " - "+ current) + " ] ";
+        let paramOptigen = 
+            "Nombre maximale de génération : "+dimensions.limit+
+            " ; Taille de la population : "+dimensions.generation+" individus ; "+
+            "Taille d'un individu de la population : "+dimensions.individual+"<br>"+
+            "Pourcentage autorisé à la reproduction : "+(100*factors.reproduction)+"% ; "+
+            "Pourcentage de mutation : "+(100*factors.mutation)+"% ; "+
+            "Pourcentage de selection : "+(100*factors.selection)+"% <br>"+
+            "Meilleur individu : "+meilleur;
 
         this.container = (container == undefined) ? undefined : container;
-        this.data = data;
-
-        this.layout = this.buildLayout(range);
+        this.data = dataOnBuild.data;
+        this.layout = this.buildLayout(dataOnBuild.range, paramOptigen);
     }
 
     /**
@@ -52,9 +58,9 @@ export class OptigenBoxPlot{
      * @param {*} yRange 
      * @returns 
      */
-    buildLayout(yRange){
+    buildLayout(yRange, title){
         var layout = {
-            title: 'Genetic Optimisation',
+            title: title,
             yaxis: {
                 range: yRange,
                 showgrid: true,
@@ -77,27 +83,15 @@ export class OptigenBoxPlot{
     /**
      * Draw the box plot
      */
-    draw(dimensions, factors, best, container){
+    draw(container){
         this.container = (this.container == undefined) ? container : this.container;
+
+        console.log(this.layout.title);
 
         Plotly.newPlot(
             this.container, 
             this.data, 
             this.layout
         );
-
-        let meilleur = " [ " + best.genome.reduce((acc, current) => acc + " - "+ current) + " ] ";
-
-        let paramOptigen = (
-            "Nombre maximale de génération : "+dimensions.limit+
-            " ; Taille de la population : "+dimensions.generation+" individus ; "+
-            "Taille d'un individu de la population : "+dimensions.individual+"<br>"+
-            "Pourcentage autorisé à la reproduction : "+(100*factors.reproduction)+"% ; "+
-            "Pourcentage de mutation : "+(100*factors.mutation)+"% ; "+
-            "Pourcentage de selection : "+(100*factors.selection)+"% <br><br>"+
-            "Meilleur individu : "+meilleur
-        );
-
-        document.getElementById(this.container).innerHTML += paramOptigen;
     }
 }
