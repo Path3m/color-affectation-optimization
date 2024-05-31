@@ -68,6 +68,7 @@ window.readSingleFile = (path) => {
 
       renewElement("streamgraph1");
       renewElement("color-graph");
+      removeElement("optigen");
 
       streamchart.graph = new Streamgraph(contents, "streamgraph1");
       streamchart.palette = globalPalette.paletteSample(streamchart.graph.getCategories().length);
@@ -93,17 +94,6 @@ window.optimizeColor = (divGraph, divPalette) => {
     let graph = streamchart.graph;
     let affect = streamchart.affectation;
 
-    //...
-    let csvContent = affect.elementaryToCsv();
-    var encodedUri = encodeURI(csvContent);
-    var link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
-    link.setAttribute("download", "my_data.csv");
-    document.body.appendChild(link); // Required for FF
-
-    link.click();
-    //...
-
     renewElement(divPalette);
     let categories = graph.getCategories();
 
@@ -124,8 +114,9 @@ window.optimizeColor = (divGraph, divPalette) => {
     renewElement("correlogram", "div", "square-container");
     renewElement("optigen-stat", "div", "boxplot-container");
 
-    new OptigenBoxPlot(result).draw(dimensions, factors, best, "optigen-stat");
-    document.getElementById("correlogram").innerHTML = affect.generateSVG(best.genome, 700);
+    new OptigenBoxPlot(result, dimensions, factors, "optigen-stat").draw();
+    document.getElementById("correlogram").innerHTML = 
+        affect.generateSVG(best.genome, 700);
 }
 
 //---------------------------------------------------------------------------------------------
@@ -152,7 +143,8 @@ window.randomColor = (divGraph, divPalette) => {
     console.log(permutation);
 
     renewElement("correlogram", "div", "square-container");
-    document.getElementById("correlogram").innerHTML = affect.generateSVG(permutation, 700);
+    document.getElementById("correlogram").innerHTML = 
+        affect.generateSVG(permutation, 700);
 }
 
 //---------------------------------------------------------------------------------------------
@@ -173,7 +165,8 @@ window.resetColor = (divGraph, divPalette) => {
     palette.draw(divPalette, graph.getCategories());
 
     renewElement("correlogram", "div", "square-container");
-    document.getElementById("correlogram").innerHTML = affect.generateSVG(affect.getPermutation(palette.colors), 700);
+    document.getElementById("correlogram").innerHTML = 
+        affect.generateSVG(affect.getPermutation(palette.colors), 700);
 }
 
 //---------------------------------------------------------------------------------------------
@@ -194,4 +187,14 @@ window.changeGraphPalette = (inc, divPalette) => {
 
     streamchart.graph.draw(streamchart.palette.colors);
     streamchart.palette.draw(divPalette, categories);
+}
+
+window.downloadCSVelementaire = (nameFile) => {
+    let csvContent = affect.elementaryToCsv();
+    var encodedUri = encodeURI(csvContent);
+    var link = renewElement("downloadCSVelementaire", "a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", nameFile+".csv");
+
+    link.click();
 }
