@@ -28,7 +28,7 @@ const allInterpol = [
 let count = 0;
 
 // GLOBAL PALETTE ----------------------------------------------------
-window.globalPalette = ColorPalette.largeGraphPalette(allInterpol[count]);
+window.globalPalette = ColorPalette.buildPalette(1000, {min:0.05, max:0.95}, allInterpol[count]);
 
 /**
  * Create a new html element of given type and class if the given id return
