@@ -124,8 +124,8 @@ export class Affectation{
                 let color2 = permutation[j];
 
                 if(i==0) {
-                    svg += '<text x="'+x+'" y="'+(margin-sizeRange)+'" transform="rotate(-90, '+x+', '+(margin-sizeRange)+')" fill="black">'+this.categorieMap[j]+'</text>\n';
-                    svg += '<rect width="'+sizeRange+'" height="'+sizeRange+'" x="'+(x-sizeRange/2)+'" y="'+(margin-sizeRange)+'"'
+                    svg += '<text x="'+x+'" y="'+(margin-31)+'" transform="rotate(-90, '+x+', '+(margin-31)+')" fill="black">'+this.categorieMap[j]+'</text>\n';
+                    svg += '<rect width="'+sizeRange+'" height="'+30+'" x="'+(x-sizeRange/2)+'" y="'+(margin-30)+'"'
                             +'style="fill:'+this.colorMap[color2]+';stroke-width:3;stroke:white" />\n';
                 }
 
@@ -136,22 +136,22 @@ export class Affectation{
                 svg +=  '<circle cx="'+x+'" cy="'+y+'" r="'+radiusDist+'" fill="green" fill-opacity="0.5"/>\n';
             }
 
-            svg += '<text x="'+(size+sizeRange)+'" y="'+y+'" fill="black">'+this.categorieMap[i]+'</text>\n';
-            svg += '<rect width="'+sizeRange+'" height="'+sizeRange+'" x="'+size+'" y="'+(y-sizeRange/2)+'"'
+            svg += '<text x="'+(size+31)+'" y="'+y+'" fill="black">'+this.categorieMap[i]+'</text>\n';
+            svg += '<rect width="'+30+'" height="'+sizeRange+'" x="'+size+'" y="'+(y-sizeRange/2)+'"'
                     +'style="fill:'+this.colorMap[color1]+';stroke-width:3;stroke:white" />\n';
         }
 
         let score_stat = "Score permutation : \n"+this.score(permutation).toFixed(3)+"\n";
 
         let legend = (
-            '<rect width="'+sizeRange+'" height="'+sizeRange+'" x="'+(0.05*size)+'" y="'+(0.625*size+margin)+'" fill="orange" />\n'
-            +'<text x="'+(0.06*size+sizeRange)+'" y="'+(0.65*size+margin)+'" fill="black">Importance de contraste</text>\n'
-            +'<rect width="'+sizeRange+'" height="'+sizeRange+'" x="'+(0.05*size)+'" y="'+(0.63*size+margin+sizeRange)+'" fill="green" />\n'
-            +'<text x="'+(0.06*size+sizeRange)+'" y="'+(0.66*size+margin+sizeRange)+'" fill="black">Distance entre couleur</text>\n'
+            '<rect width="'+30+'" height="'+30+'" x="'+(0.05*size)+'" y="'+(0.625*size+margin)+'" fill="orange" />\n'
+            +'<text x="'+(0.06*size+30)+'" y="'+(0.65*size+margin)+'" fill="black">Importance de contraste</text>\n'
+            +'<rect width="'+30+'" height="'+30+'" x="'+(0.05*size)+'" y="'+(0.63*size+margin+30)+'" fill="green" />\n'
+            +'<text x="'+(0.06*size+30)+'" y="'+(0.66*size+margin+30)+'" fill="black">Distance entre couleur</text>\n'
         );
 
         return svg
-            +'<text x="'+(0.05*size)+'" y="'+(0.67*size+margin+2*sizeRange)+'" fill="black">'+score_stat+'</text>\n'
+            +'<text x="'+(0.05*size)+'" y="'+(0.67*size+margin+2*30)+'" fill="black">'+score_stat+'</text>\n'
             + legend
             +'</svg>\n';
     }
