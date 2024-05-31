@@ -68,7 +68,8 @@ window.readSingleFile = (path) => {
 
       renewElement("streamgraph1");
       renewElement("color-graph");
-      removeElement("optigen");
+      removeElement("correlogram");
+      removeElement("optigen-stat");
 
       streamchart.graph = new Streamgraph(contents, "streamgraph1");
       streamchart.palette = globalPalette.paletteSample(streamchart.graph.getCategories().length);
@@ -84,11 +85,10 @@ window.readSingleFile = (path) => {
 //------------------------------------------------------------------------------------------------
 //------------------------------------------------------------------------------------------------
 /**
- * 
- * @param {*} graph 
- * @param {*} palette 
- * @param {*} divGraph 
- * @param {*} divPalette 
+ * Execute the genetic optimisation and change the color
+ * of the displayed graph
+ * @param {*} divGraph id of the div element where the graph is displayed
+ * @param {*} divPalette id of the div element where the graph palette is displayed
  */
 window.optimizeColor = (divGraph, divPalette) => {
     let graph = streamchart.graph;
@@ -122,8 +122,8 @@ window.optimizeColor = (divGraph, divPalette) => {
 //---------------------------------------------------------------------------------------------
 /**
  * Randomly affect the palette color to the graph categories
- * @param {*} divGraph 
- * @param {*} divPalette 
+ * @param {*} divGraph id of the div element where the graph is displayed
+ * @param {*} divPalette id of the div element where the graph palette is displayed
  */
 window.randomColor = (divGraph, divPalette) => {
     let graph = streamchart.graph;
@@ -190,7 +190,7 @@ window.changeGraphPalette = (inc, divPalette) => {
 }
 
 window.downloadCSVelementaire = (nameFile) => {
-    let csvContent = affect.elementaryToCsv();
+    let csvContent = streamchart.affectation.elementaryToCsv();
     var encodedUri = encodeURI(csvContent);
     var link = renewElement("downloadCSVelementaire", "a");
     link.setAttribute("href", encodedUri);
