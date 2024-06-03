@@ -3,6 +3,14 @@ import { Streamgraph } from "./Streamgraph.js";
 import * as util from "./utilitaire.js";
 
 export class Affectation{
+
+    /**
+     * Build an affectation according to a graph and a palette,
+     * using the method to compute contrast importance of the graph
+     * @param {*} graph 
+     * @param {ImportanceMethod} method 
+     * @param {ColorPalette} colorPalette 
+     */
     constructor(graph, method, colorPalette){
         this.importance = graph.importance(method);
         this.distance   = colorPalette.computeDistanceMatrix();
@@ -17,31 +25,35 @@ export class Affectation{
 
     /**
      * Set a new color palette to affect to the graph
-     * @param {*} colorPalette 
+     * @param {ColorPalette} colorPalette 
+     * @return a reference to the current object
      */
     setPalette(colorPalette){
         this.distance = colorPalette.computeDistanceMatrix();
         this.colorMap = {};
         for(let i=0; i<colorPalette.colors.length; this.colorMap[i] = colorPalette.colors[i++]);
+        return this;
     }
 
     /**
      * Set a new graph to match the color palette
      * @param {*} graph 
-     * @param {*} method 
+     * @param {ImportanceMethod} method to compute importance matrix
+     * @return a reference to the current object
      */
     setGraph(graph, method){
         this.importance = graph.importance(method);
         const categories = graph.getCategories();
         this.categorieMap = {};
         for(let i=0; i<categories.length; this.categorieMap[i] = categories[i++]);
+        return this;
     }
 
     /**
      * Compute the score of a permutation
      * using the importance and distance matrix
      * @param {*} permutation 
-     * @returns 
+     * @returns a number, the score of the permutation
      */
     score(permutation){
         let sum = 0;
@@ -101,6 +113,7 @@ export class Affectation{
      * Generate the svg representation of the corellogram used to check
      * result between importance and color distance
      * @param {Array} permutation corresponding to an affectation of colors on the categories
+     * @param {number} size of the svg object
      * @returns a string that contains all the information of the svg
      */
     generateSVG(permutation, size){
@@ -156,24 +169,31 @@ export class Affectation{
             +'</svg>\n';
     }
 
+    /**
+     * Create a csv string with the data from the elementary importance.
+     * The categories without positive values will be ignored.
+     * @returns a string containing all the information about the csv that now can be download
+     */
     elementaryToCsv(){
         let csvContent = "data:text/csv;charset=utf-8,";
 
-        //récupération des données
+        //getting the right data (values aren't null)
         let matrix = new Array();
         matrix.push(["instant"]);
 
         this.importance.elementaire.forEach((value, key, map) => {
-            let line = new Array();
-            line.push(key); line.push(...value);
-            matrix.push(line);
+            if(value.reduce((acc, current) => acc || (current != 0), false)){
+                let line = new Array();
+                line.push(key); line.push(...value);
+                matrix.push(line);
+            }
         });
 
         for(let i=0; i<matrix[1].length-1; matrix[0].push(i++));
 
         console.log(matrix);
 
-        //passage des données dans la chaîne csv
+        //(convering to csv format)
         for(let j=0; j<matrix[0].length; j++){
             for(let i=0; i<matrix.length-1; i++){    
                 csvContent += matrix[i][j] + ","
