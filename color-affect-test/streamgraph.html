@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="./style.css"/>
+
+    <!-- to draw the streamgraph -->
+    <script src="https://d3js.org/d3.v6.js"></script>
+
+    <!-- to print heatmap : note that it can be done with d3, to see later on -->
+    <script src="https://cdn.anychart.com/releases/8.11.0/js/anychart-core.min.js"></script>
+    <script src="https://cdn.anychart.com/releases/8.11.0/js/anychart-heatmap.min.js"></script>
+
+    <!-- to compute distance between colors -->
+    <script src="https://cdn.jsdelivr.net/npm/culori"></script>
+
+    <!-- to use box plot -->
+    <script src="https://cdn.plot.ly/plotly-2.32.0.min.js" charset="utf-8"></script>
+
+    <script type="module" src="global.js"></script>
+    <script type="module" src="streamgraph.js"></script>
+</head>
+
+<body>
+    <nav class="topnav">
+        <a href="./index.html">Main Page</a>
+        <a class="active" href="./streamgraph.html">Streamchart example</a>
+        <a href="./importance.html">importance Stat</a>
+    </nav>
+
+    <button id="dataToMusic" onclick="setStreamChart(0,'streamgraph1','color-graph')">Music listening among time</button>
+    <button id="dataToNames" onclick="setStreamChart(1,'streamgraph1','color-graph')">Usa name during the past century</button>
+    <button id="next-data" onclick="setStreamChart(++currentSG,'streamgraph1','color-graph')">Next Data</button>
+
+    <!--  -->
+    <input type="file" id="file-input" />
+    <!--  -->
+
+    <!-- Part music -->
+    <div id="streamgraph1"></div>
+
+    <button id="button-optimize" onclick="optimizeColor('streamgraph1', 'color-graph')">Optimize Color</button>
+    <button id="button-random" onclick="randomColor('streamgraph1', 'color-graph')">Random Color</button>
+    <button id="button-reset" onclick="resetColor('streamgraph1', 'color-graph')">Bitmap Color</button>
+    <button id="button-previous-palette" onclick="changeGraphPalette(-1, 'color-graph')">Previous Palette</button>
+    <button id="button-next-palette" onclick="changeGraphPalette(1, 'color-graph')">Next Palette</button>
+    <button id="button-download-csv-elementaire" onclick="downloadCSVelementaire('elementary-importance')">Download Elementary Importance</button>
+
+    <div class="palette-container" id="color-graph"></div>
+</body>
+
+</html>

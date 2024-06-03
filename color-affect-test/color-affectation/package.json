@@ -1,0 +1,26 @@
+{
+  "name": "color-affectation",
+  "version": "0.0.1",
+  "description": "A package to optimise color affectation in grahical representation of unordered categorical data.",
+  "main": "test/optigenTest.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "color",
+    "optimisation",
+    "affectation",
+    "permutation"
+  ],
+  "author": "Aurel Hamon",
+  "license": "MIT",
+  "devDependencies": {
+    "d3" : "^7.0.0",
+    "culori" : "^4.0.1",
+    "plotly": "^1.0.6",
+    "anychart": "^8.12.1"
+  }
+}
