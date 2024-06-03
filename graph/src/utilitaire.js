@@ -2,7 +2,7 @@
  * Allocate a matrix of number of size (n x m)  filled with 0
  * @param {number} n 
  * @param {number} m 
- * @param {ArrayConstructor} ArrayNumber
+ * @param {*} ArrayNumber
  * @returns a matrix filled with 0
  */
 export function nullMatrix(n, m, ArrayNumber){

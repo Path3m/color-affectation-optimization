@@ -1,5 +1,6 @@
 import { ColorPalette } from "./ColorPalette.js";
 import { Streamgraph } from "./Streamgraph.js";
+import { StreamgraphContrastImportance } from "./StreamgraphContrastImportance.js";
 import * as util from "./utilitaire.js";
 
 export class Affectation{
@@ -12,10 +13,10 @@ export class Affectation{
      * @param {ColorPalette} colorPalette 
      */
     constructor(graph, method, colorPalette){
-        this.importance = graph.importance(method);
+        this.importance = new StreamgraphContrastImportance(graph.data, method);
         this.distance   = colorPalette.computeDistanceMatrix();
 
-        const categories = graph.getCategories();
+        const categories = this.importance.categories;
         this.colorMap = {}, this.categorieMap = {};
         for(let i=0; i<categories.length; i++){
             this.colorMap[i]     = colorPalette.colors[i];
@@ -42,8 +43,8 @@ export class Affectation{
      * @return a reference to the current object
      */
     setGraph(graph, method){
-        this.importance = graph.importance(method);
-        const categories = graph.getCategories();
+        this.importance = new StreamgraphContrastImportance(graph.data, method);
+        const categories = this.importance.categories;
         this.categorieMap = {};
         for(let i=0; i<categories.length; this.categorieMap[i] = categories[i++]);
         return this;
@@ -181,7 +182,7 @@ export class Affectation{
         let matrix = new Array();
         matrix.push(["instant"]);
 
-        this.importance.elementaire.forEach((value, key, map) => {
+        this.importance.elementary.forEach((value, key, map) => {
             if(value.reduce((acc, current) => acc || (current != 0), false)){
                 let line = new Array();
                 line.push(key); line.push(...value);
