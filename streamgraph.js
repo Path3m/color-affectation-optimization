@@ -1,15 +1,14 @@
-import {ColorPalette} from "../graph/src/ColorPalette.js";
-import {Streamgraph} from "../graph/src/Streamgraph.js";
-import * as method from "../graph/src/computationMethod.js";
+import {ColorPalette} from "./color-affectation/src/affectation/ColorPalette.js";
+import {Streamgraph} from "./color-affectation/src/graph/Streamgraph.js";
+import {Affectation} from "./color-affectation/src/affectation/Affectation.js";
+import * as method from "./color-affectation/src/affectation/computationMethod.js";
 
-import { Optigen } from "../optigen/src/Optigen.js";
-import { Permutation } from "../optigen/src/Permutation.js";
+import { Optigen } from "./color-affectation/src/optigen/Optigen.js";
+import { Permutation } from "./color-affectation/src/optigen/Permutation.js";
 
-import { HeatMap } from "../stat/HeatMap.js";
-import { OptigenBoxPlot } from "../stat/BoxPlot.js";
+import { OptigenBoxPlot } from "./color-affectation/src/stat/BoxPlot.js";
 
-import * as dataset from "./data/dataset.js";
-import { Affectation } from "../graph/src/Affectation.js";
+import * as dataset from "./color-affectation/src/data/dataset.js";
 
 import * as obj from "./global.js";
 
@@ -36,6 +35,9 @@ window.streamchart = {
     palette: defaultPalette,
     affectation: defaultAffect
 };
+
+streamchart.graph.draw(streamchart.palette.colors, "streamgraph1");
+streamchart.palette.draw("color-graph", streamchart.graph.getCategories());
 
 //----------------------------------------------------------------------------------------------
 /**
@@ -80,6 +82,8 @@ window.readSingleFile = (path) => {
     };
     reader.readAsText(file);
 }
+
+document.getElementById('file-input').addEventListener('change', readSingleFile, false);
 
 // CHANGE THE AFFECTATION OF COLOR  --------------------------------------------------------------
 //------------------------------------------------------------------------------------------------

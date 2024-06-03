@@ -19,6 +19,7 @@
     <script src="https://cdn.plot.ly/plotly-2.32.0.min.js" charset="utf-8"></script>
 
     <scritp type="module" src="global.js"></scritp>
+    <script type="module" src="color-affectation/test/optigenTest.js"></script>
 
 </head>
 
@@ -44,78 +45,6 @@
 
         <div id="optigen" class="boxplot-container"></div>
     </div>
-
-    <script type="module" src="optigen/test/optigenTest.js"></script>
-    <script>
-
-    </script>
-
-<!--     <script type="module">
-        import * as method from "./graph/src/computationMethod.js";
-        import {Permutation} from "./optigen/src/Permutation.js";
-
-        let name1 = "Empire_of_the_Sun"; 
-        let name2 = "Fever_Ray";
-
-        let elementary = obj.defaultStreamgraph.importance(method.impAverage).elementaire;
-        let impElementary = elementary.get(name1+name2);
-
-        console.log(impElementary);
-
-        let firstCat = obj.defaultStreamgraph.getCategorie(name1);
-        let secondCat = obj.defaultStreamgraph.getCategorie(name2);
-
-        for(let i=0; i<secondCat.values.length; i++){
-            secondCat.values[i] += firstCat.values[i];
-            impElementary[i] *= 100000;
-        }
-
-        let xscale = Permutation.index(firstCat.values.length);
-
-        console.log(firstCat);
-        console.log(secondCat);
-
-        let trace1 = {
-            x: xscale,
-            y: firstCat.values,
-            name: firstCat.name,
-            mode: 'lines',
-            line: {
-              color: 'rgb(0, 255, 0)',
-              width: 3
-            }
-        }
-
-        let trace2 = {
-            x: xscale,
-            y: secondCat.values,
-            name: secondCat.name,
-            mode: 'lines',
-            line: {
-              color: 'rgb(255, 0, 0)',
-              width: 3
-            }
-        }
-
-        let trace3 = {
-            x: xscale,
-            y: impElementary,
-            name: "Importance "+name1+" / "+name2,
-            mode: 'lines',
-            line: {
-              color: 'rgb(0, 0, 255)',
-              width: 3
-            }
-        }
-
-        let data = [trace1, trace2, trace3];
-
-        var layout = {
-            title: 'Line and Scatter Styling'
-        };
-
-        Plotly.newPlot('linechart', data, layout);
-    </script> -->
 </body>
 
 </html>

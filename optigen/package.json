@@ -1,9 +1,0 @@
-{
-    "name": "optigen-test",
-    "version": "1.0.0",
-    "description": "run test for genetic optimisation",
-    "main": "test/optigenTest.js",
-    "type": "module", 
-    "dependencies": {
-    }
-}

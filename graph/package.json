@@ -1,9 +1,0 @@
-{
-    "name": "function-testing",
-    "version": "1.0.0",
-    "description": "just run some test of function in js",
-    "main": "test/graphTest.js",
-    "type": "module", 
-    "dependencies": {
-    }
-}

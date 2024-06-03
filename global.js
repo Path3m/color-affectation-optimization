@@ -1,16 +1,9 @@
-import {ColorPalette} from "./graph/src/ColorPalette.js";
-import {Streamgraph} from "./graph/src/Streamgraph.js";
-import * as method from "./graph/src/computationMethod.js";
+import {ColorPalette} from "./color-affectation/src/affectation/ColorPalette.js";
+import {Streamgraph} from "./color-affectation/src/graph/Streamgraph.js";
+import * as method from "./color-affectation/src/affectation/computationMethod.js";
 
-import { Optigen } from "./optigen/src/Optigen.js";
-import { Permutation } from "./optigen/src/Permutation.js";
-
-import { HeatMap } from "./stat/HeatMap.js";
-import { OptigenBoxPlot } from "./stat/BoxPlot.js";
-
-import * as dataset from "./data/dataset.js";
-import { Affectation } from "./graph/src/Affectation.js";
-
+import { Optigen } from "./color-affectation/src/optigen/Optigen.js";
+import { Permutation } from "./color-affectation/src/optigen/Permutation.js";
 
 //CHANGE COLOR PALETTE ------------------------------------------------------
 const allInterpol = [
