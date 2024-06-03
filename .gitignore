@@ -1,2 +1,5 @@
 # Ignore launch files from visual studio code
 .vscode/
+
+# Ignore node module
+node_modules/
