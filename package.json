@@ -1,0 +1,14 @@
+{
+  "name": "color-affectation-optimization",
+  "version": "0.0.0",
+  "description": "Trying to implement a method to optimise color affectation between categories of data by taking into account the contrast need and color distance.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

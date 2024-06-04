@@ -1,14 +1,14 @@
-import {ColorPalette} from "./color-affectation/src/affectation/ColorPalette.js";
-import {Streamgraph} from "./color-affectation/src/graph/Streamgraph.js";
-import {Affectation} from "./color-affectation/src/affectation/Affectation.js";
-import * as method from "./color-affectation/src/affectation/computationMethod.js";
+import {ColorPalette} from "../../color-affectation/src/affectation/ColorPalette.js";
+import {Streamgraph} from "../../color-affectation/src/graph/Streamgraph.js";
+import {Affectation} from "../../color-affectation/src/affectation/Affectation.js";
+import * as method from "../../color-affectation/src/affectation/computationMethod.js";
 
-import { Optigen } from "./color-affectation/src/optigen/Optigen.js";
-import { Permutation } from "./color-affectation/src/optigen/Permutation.js";
+import { Optigen } from "../../color-affectation/src/optigen/Optigen.js";
+import { Permutation } from "../../color-affectation/src/optigen/Permutation.js";
 
-import { OptigenBoxPlot } from "./color-affectation/src/stat/BoxPlot.js";
+import { OptigenBoxPlot } from "../../color-affectation/src/stat/BoxPlot.js";
 
-import * as dataset from "./color-affectation/src/data/dataset.js";
+import * as dataset from "../../color-affectation/src/data/dataset.js";
 
 import * as obj from "./global.js";
 
