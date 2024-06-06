@@ -3,7 +3,7 @@ import { Permutation } from "../src/optigen/Permutation.js";
 import { Population } from "../src/optigen/Population.js";
 
 import { OptigenBoxPlot } from "../src/stat/BoxPlot.js";
-import * as obj from "../../global.js";
+import * as obj from "../../js/global.js";
 
 //SCORE COMPUTING to test the genetic optimisation
 function bestScoreIfOrdered(array) {

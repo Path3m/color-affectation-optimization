@@ -12,6 +12,8 @@ import * as dataset from "../../color-affectation/src/data/dataset.js";
 
 import * as obj from "./global.js";
 
+import {HeatMap as hm} from "../color-affectation/src/stat/HeatMap.js";
+
 // ---------------------------------------------------------------------------------------------
 // CHANGE THE GRAPH TO DISPLAY -----------------------------------------------------------------
 // ---------------------------------------------------------------------------------------------
@@ -24,7 +26,7 @@ let dataStreamgraph = [
     dataset.truc    
 ];
 
-window.currentSG = 0;
+window.currentSG = 4;
 
 const defaultStreamgraph = new Streamgraph(dataStreamgraph[currentSG]);
 const defaultPalette = globalPalette.paletteSample(defaultStreamgraph.getCategories().length);
@@ -38,6 +40,16 @@ window.streamchart = {
 
 streamchart.graph.draw(streamchart.palette.colors, "streamgraph1");
 streamchart.palette.draw("color-graph", streamchart.graph.getCategories());
+
+// DISPLAY HEATMAP
+/* let hmColor = hm.colorDistanceHeatMap(streamchart.palette);
+let hmCat   = hm.importanceHeatMap(streamchart.graph.data, method.impAverage);
+
+renewElement("hmColor", "div",  "heatmap-container");
+renewElement("hmCat", "div",  "heatmap-container");
+
+hmColor.draw("hmColor");
+hmCat.draw("hmCat"); */
 
 //----------------------------------------------------------------------------------------------
 /**
