@@ -3,4 +3,4 @@ Trying to implement a method to optimise color affectation between categories of
 
 This repository is the next of my previous work on js graph library [see](https://github.com/Path3m/test-js-steamgraph) and genetic optimisation [see](https://github.com/Path3m/test-optigen).  
   
-For the package information click here.
+For the package information [click here](https://github.com/Path3m/color-affectation-optimization/tree/main/package-version/cid-cao).
