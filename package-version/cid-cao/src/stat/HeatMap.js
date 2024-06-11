@@ -1,8 +1,6 @@
 import { ColorPalette } from "../affectation/ColorPalette.js";
-import {Streamgraph} from "../graph/Streamgraph.js";
 import {ImportanceMethod} from "../affectation/computationMethod.js";
-
-import * as anychart from "anychart";
+import { StreamgraphContrastImportance as sci} from "../affectation/StreamgraphContrastImportance.js";
 
 export class HeatMap{
     /**
@@ -55,12 +53,11 @@ export class HeatMap{
      * @param {*} computeMethod 
      * @returns 
      */
-    static importanceHeatMap(graph, computeMethod, container){
-        let importance = graph.importance(computeMethod);
-        let categories = graph.getCategories();
+    static importanceHeatMap(graphData, computeMethod, container){
+        let importance = new sci(graphData, computeMethod);
 
         return new HeatMap(
-            importance.global, categories, "Importance : "+computeMethod.name(), container
+            importance.global, importance.categories, "Importance : "+computeMethod.name(), container
         );
     }
 

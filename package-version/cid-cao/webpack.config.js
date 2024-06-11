@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = {
-  mode: "development",
+  mode: "production",
   entry: './src/index.js',
   devtool: 'inline-source-map',
   devServer: {
@@ -13,7 +13,7 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     globalObject: 'this',
     library: {
-      name: 'cidCao',
+      name: 'cidcao',
       type: 'umd',
     },
   }

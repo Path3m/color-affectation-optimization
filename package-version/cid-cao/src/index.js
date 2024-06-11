@@ -8,10 +8,10 @@ import {Individual} from "./optigen/Individuals.js";
 import {Population} from "./optigen/Population.js";
 import {Optigen} from "./optigen/Optigen.js";
 
-import { Streamgraph } from "./graph/Streamgraph.js";
-
 import * as util from "./utility.js";
-import * as data from "./data/dataset.js";
+
+import {HeatMap} from "./stat/HeatMap.js";
+import {OptigenBoxPlot} from "./stat/BoxPlot.js";
 
 /* let streamchart = new Streamgraph(data.dm10layers);
 let categories = streamchart.getCategories();
@@ -41,7 +41,6 @@ component2(); */
 
 export { Permutation, Individual, Population, Optigen }; /*genetic optimisation*/
 export { Affectation, ColorPalette, StreamgraphContrastImportance }; /*affectation*/
-export {Streamgraph}; // helper to manipulate d3.js streamgraph
+export {HeatMap, OptigenBoxPlot}; /*statistics*/
 export { method }; // computation of importance
-export {data}; //example dataset to work over streamgraph
 export {util}; //utility function

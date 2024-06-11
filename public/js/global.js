@@ -1,9 +1,4 @@
-import {ColorPalette} from "../../color-affectation/src/affectation/ColorPalette.js";
-import {Streamgraph} from "../../color-affectation/src/graph/Streamgraph.js";
-import * as method from "../../color-affectation/src/affectation/computationMethod.js";
-
-import { Optigen } from "../../color-affectation/src/optigen/Optigen.js";
-import { Permutation } from "../../color-affectation/src/optigen/Permutation.js";
+const ColorPalette = cidcao.ColorPalette;
 
 //CHANGE COLOR PALETTE ------------------------------------------------------
 const allInterpol = [

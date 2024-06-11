@@ -1,24 +1,21 @@
 {
   "name": "cid-cao",
   "version": "0.0.1",
-  "description": "A package to automate color affectation to categorical data in chart or graphical representation.",
-  "private": true,
+  "description": "A package for optimising automated color affectation to categories of data in graphical visualization",
+  "main": "./src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack serve --open",
     "build": "webpack"
   },
   "author": "Aurel Hamon",
   "license": "MIT",
   "devDependencies": {
     "webpack": "^5.91.0",
-    "webpack-cli": "^5.1.4",
-    "webpack-dev-server": "^5.0.4"
+    "webpack-cli": "^5.1.4"
   },
   "dependencies": {
     "anychart": "^8.12.1",
     "culori": "^4.0.1",
-    "d3": "^7.9.0",
-    "plotly": "^1.0.6"
+    "plotly.js-dist": "^2.33.0"
   }
 }

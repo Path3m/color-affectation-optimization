@@ -1,5 +1,4 @@
 import { ColorPalette } from "./ColorPalette.js";
-import { Streamgraph } from "../graph/Streamgraph.js";
 import { StreamgraphContrastImportance } from "./StreamgraphContrastImportance.js";
 import * as util from "../utility.js";
 

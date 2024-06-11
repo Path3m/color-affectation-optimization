@@ -1,6 +1,6 @@
 import { Permutation } from "../optigen/Permutation.js";
 import { ColorPalette } from "../affectation/ColorPalette.js";
-import * as Plotly from "plotly";
+import * as Plotly from "plotly.js-dist";
 
 export class OptigenBoxPlot{
     /**
@@ -11,7 +11,7 @@ export class OptigenBoxPlot{
     constructor(geneticResult, dimensions, factors, container){
         let palette = ColorPalette.buildPalette(
             20,{min:0.1,max:0.9},
-            d3.interpolateViridis
+            ColorPalette.interpolateDark
         );
         let dataOnBuild = this.buildData(geneticResult.statistic, palette.colors);
 

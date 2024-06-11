@@ -1,13 +1,23 @@
 import * as util from "../utility.js";
 import * as culori from "culori";
-import * as d3 from "d3";
 
 //NB : to use in accordance with a factory class ?
 
 export class ColorPalette{
 
-    static interpolateBuRd = x => d3.interpolateRdBu(d3.interpolateNumber(0.65, 0)(x));
-    static interpolateBuYlRd = x => d3.interpolateRdYlBu(d3.interpolateNumber(0.65, 0)(x));
+    /**
+     * 
+     * @param {*} x 
+     * @returns 
+     */
+    static interpolateBuRd = x => culori.formatHex(culori.interpolate(['blue','white','red'])(x));
+
+    /**
+     * 
+     * @param {*} x 
+     * @returns 
+     */
+    static interpolateDark = x => culori.formatHex(culori.interpolate(['#000000','#aaaaaa'])(x));
 
     /**
      * 
