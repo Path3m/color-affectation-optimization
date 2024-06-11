@@ -5,14 +5,13 @@ import * as util from "../utility.js";
 export class Affectation{
 
     /**
-     * Build an affectation according to a graph and a palette,
+     * Build an affectation according to the contraste importance and a palette,
      * using the method to compute contrast importance of the graph
-     * @param {*} graph 
-     * @param {ImportanceMethod} method 
+     * @param {*} importance 
      * @param {ColorPalette} colorPalette 
      */
-    constructor(graph, method, colorPalette){
-        this.importance = new StreamgraphContrastImportance(graph.data, method);
+    constructor(importance, colorPalette){
+        this.importance = importance;
         this.distance   = colorPalette.computeDistanceMatrix();
 
         const categories = this.importance.categories;
@@ -26,7 +25,7 @@ export class Affectation{
     /**
      * Set a new color palette to affect to the graph
      * @param {ColorPalette} colorPalette 
-     * @return a reference to the current object
+     * @return {Affectation} a reference to the current object
      */
     setPalette(colorPalette){
         this.distance = colorPalette.computeDistanceMatrix();
@@ -77,7 +76,7 @@ export class Affectation{
      * Given a permutation, get the corresponding set of color
      * from the color map.
      * @param {Array} permutation 
-     * @returns the array of new colors
+     * @returns {Array} the new colors
      */
     getColor(permutation){
         let newcolors = new Array(permutation.length);
@@ -114,7 +113,7 @@ export class Affectation{
      * result between importance and color distance
      * @param {Array} permutation corresponding to an affectation of colors on the categories
      * @param {number} size of the svg object
-     * @returns a string that contains all the information of the svg
+     * @returns {string} that contains all the information of the svg
      */
     generateSVG(permutation, size){
         let margin = 200; 
@@ -172,7 +171,7 @@ export class Affectation{
     /**
      * Create a csv string with the data from the elementary importance.
      * The categories without positive values will be ignored.
-     * @returns a string containing all the information about the csv that now can be download
+     * @returns {string} containing all the information about the csv that now can be download
      */
     elementaryToCsv(){
         return this.importance.impElementaryToCSV();

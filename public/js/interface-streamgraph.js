@@ -6,13 +6,17 @@ import * as obj from "./global.js";
 const ColorPalette = cidcao.ColorPalette;
 const Affectation = cidcao.Affectation;
 const method = cidcao.method;
+const StreamgraphContrastImportance = cidcao.StreamgraphContrastImportance;
+
 const Optigen = cidcao.Optigen;
 const Permutation = cidcao.Permutation;
+
 const OptigenBoxPlot = cidcao.OptigenBoxPlot;
+const hm = cidcao.HeatMap;
 
 
 // ---------------------------------------------------------------------------------------------
-// CHANGE THE GRAPH TO DISPLAY -----------------------------------------------------------------
+// DEFINING THE STREAMGRAPH TO DISPLAY ---------------------------------------------------------
 // ---------------------------------------------------------------------------------------------
 let dataStreamgraph = [
     dataset.dmFilterAlternative,
@@ -23,14 +27,16 @@ let dataStreamgraph = [
     dataset.truc    
 ];
 
-window.currentSG = 4;
+window.currentSG = 0;
 
 const defaultStreamgraph = new Streamgraph(dataStreamgraph[currentSG]);
+const defaultImportance = new StreamgraphContrastImportance(defaultStreamgraph.data, method.impMaxInverse);
 const defaultPalette = globalPalette.paletteSample(defaultStreamgraph.getCategories().length);
-const defaultAffect = new Affectation(defaultStreamgraph, method.impMaxInverse, defaultPalette);
+const defaultAffect = new Affectation(defaultImportance, defaultPalette);
 
 window.streamchart = {
     graph: defaultStreamgraph,
+    importance: defaultImportance,
     palette: defaultPalette,
     affectation: defaultAffect
 };
@@ -38,8 +44,33 @@ window.streamchart = {
 streamchart.graph.draw(streamchart.palette.colors, "streamgraph1");
 streamchart.palette.draw("color-graph", streamchart.graph.getCategories());
 
-// DISPLAY HEATMAP
-/* let hmColor = hm.colorDistanceHeatMap(streamchart.palette);
+/**
+ * Helper function to renew the streamchart when new data are used.
+ * Also display the streamchart, its color palette, and the  corresponding correlogram.
+ * @param {*} data the graph data
+ */
+function renewStreamchart(data){
+    renewElement("streamgraph1");
+    renewElement("color-graph");
+    renewElement("correlogram", "div", "square-container");
+
+    removeElement("optigen-stat");
+
+    streamchart.graph = new Streamgraph(data);
+    streamchart.importance = new StreamgraphContrastImportance(streamchart.graph.data, method.impMaxInverse);
+    streamchart.palette = globalPalette.paletteSample(streamchart.graph.getCategories().length);
+    streamchart.affectation = new Affectation(streamchart.importance, streamchart.palette);
+
+    streamchart.graph.draw(streamchart.palette.colors, "streamgraph1");
+    streamchart.palette.draw("color-graph", streamchart.importance.categories);
+    document.getElementById("correlogram").innerHTML = 
+        streamchart.affectation.generateSVG(Permutation.index(
+            streamchart.importance.categories.length
+        ), 700);
+}
+
+/* DISPLAY HEATMAP
+let hmColor = hm.colorDistanceHeatMap(streamchart.palette);
 let hmCat   = hm.importanceHeatMap(streamchart.graph.data, method.impAverage);
 
 renewElement("hmColor", "div",  "heatmap-container");
@@ -51,21 +82,11 @@ hmCat.draw("hmCat"); */
 //----------------------------------------------------------------------------------------------
 /**
  * Set the current streamgraph on data with given number
- * @param {*} num 
- * @param {*} divID 
+ * @param {number} num the index of the data to use (@see {data\dataset.js} )
  */
-window.setStreamChart = (num, divGraph, divPalette) => {
+window.setStreamChart = (num) => {
     currentSG = num%dataStreamgraph.length;
-    let graph = new Streamgraph(dataStreamgraph[currentSG]);
-    let palette = globalPalette.paletteSample(graph.getCategories().length);
-    let affectation = new Affectation(graph, method.impMaxInverse, palette);
-    streamchart = { graph : graph, palette : palette, affectation : affectation };
-    
-    console.log(streamchart);
-    streamchart.graph.draw(streamchart.palette.colors, divGraph);
-
-    renewElement(divPalette);
-    streamchart.palette.draw(divPalette, streamchart.graph.getCategories());
+    renewStreamchart(dataStreamgraph[currentSG]);
 }
 
 // READ LOCAL FILE --------------------------------------------------------------------
@@ -76,18 +97,7 @@ window.readSingleFile = (path) => {
     var reader = new FileReader();
     reader.onload = function(path) {
       var contents = path.target.result;
-
-      renewElement("streamgraph1");
-      renewElement("color-graph");
-      removeElement("correlogram");
-      removeElement("optigen-stat");
-
-      streamchart.graph = new Streamgraph(contents, "streamgraph1");
-      streamchart.palette = globalPalette.paletteSample(streamchart.graph.getCategories().length);
-      streamchart.affectation = new Affectation(streamchart.graph, method.impMaxInverse, streamchart.palette);
-
-      streamchart.graph.draw(streamchart.palette.colors);
-      streamchart.palette.draw("color-graph", streamchart.graph.getCategories());
+      renewStreamchart(contents);
     };
     reader.readAsText(file);
 }
@@ -202,6 +212,12 @@ window.changeGraphPalette = (inc, divPalette) => {
     streamchart.palette.draw(divPalette, categories);
 }
 
+//---------------------------------------------------------------------------------------------
+/**
+ * Download the elementary importance in a csv file, with the same convention
+ * used for streamchart
+ * @param {string} nameFile
+ */
 window.downloadCSVelementaire = (nameFile) => {
     let csvContent = streamchart.affectation.elementaryToCsv();
     var encodedUri = encodeURI(csvContent);

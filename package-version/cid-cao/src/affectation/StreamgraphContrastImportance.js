@@ -1,4 +1,5 @@
 import * as util from "../utility.js";
+import {ImportanceMethod} from "./computationMethod.js";
 
 export class StreamgraphContrastImportance{
     /**

@@ -1,3 +1,10 @@
+/**
+ * @description Dataset for streamgraph, using d3.js and the @see {Streamgraph} class
+ * @date june 2024
+ * @author Aurel Hamon
+ * @contact aurel.hamon@etu.univ-nantes.fr
+ */
+
 export const binary = (
   "instant,b3,b2,b1,b0\n"+
   "000,0,0,0,0\n"+

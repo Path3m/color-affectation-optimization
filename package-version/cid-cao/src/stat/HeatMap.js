@@ -2,6 +2,8 @@ import { ColorPalette } from "../affectation/ColorPalette.js";
 import {ImportanceMethod} from "../affectation/computationMethod.js";
 import { StreamgraphContrastImportance as sci} from "../affectation/StreamgraphContrastImportance.js";
 
+import * as anychart from "anychart";
+
 export class HeatMap{
     /**
      * Constructor

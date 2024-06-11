@@ -1,6 +1,11 @@
 /**
- * Helper class to generate streamgraph with d3.js.
- * Created from 
+ * @description Helper class to generate streamgraph with d3.js.
+ * Created from a script on @see {@link https://d3-graph-gallery.com/graph/streamgraph_basic.html | d3-graph-gallery}
+ * by @see {@link https://www.yan-holtz.com/ | Yann Holtz}
+ * 
+ * @date june 2024
+ * @author Aurel Hamon
+ * @contact aurel.hamon@etu.univ-nantes.fr
  */
 
 export class Streamgraph {
